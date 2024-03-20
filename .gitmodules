@@ -2,3 +2,6 @@
 	path = public
 	url = https://github.com/5hdumat/5hdumat.github.io.git
 	branch = github-pages
+[submodule "themes/hugo-book"]
+	path = themes/hugo-book
+	url = https://github.com/5hdumat/hugo-book
