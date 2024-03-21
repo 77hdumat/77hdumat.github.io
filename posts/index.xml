@@ -41,7 +41,7 @@
       <link>https://example.org/posts/post/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://example.org/posts/post/</guid>
-      <description>Hugo Book Theme Test # Hugo documentation theme as simple as plain book # Features Requirements Installation Menu Blog Configuration Shortcodes Versioning Contributing Features # Clean simple design Light and Mobile-Friendly Multi-language support Customisable Zero initial configuration Handy shortcodes Comments support Simple blog and taxonomy Primary features work without JavaScript Dark Mode Requirements # Hugo 0.79 or higher Hugo extended version, Installation Instructions Installation # Install as git submodule # Navigate to your hugo project root and run:</description>
+      <description>Hugo Book Theme # Hugo documentation theme as simple as plain book # Features Requirements Installation Menu Blog Configuration Shortcodes Versioning Contributing Features # Clean simple design Light and Mobile-Friendly Multi-language support Customisable Zero initial configuration Handy shortcodes Comments support Simple blog and taxonomy Primary features work without JavaScript Dark Mode Requirements # Hugo 0.79 or higher Hugo extended version, Installation Instructions Installation # Install as git submodule # Navigate to your hugo project root and run:</description>
     </item>
   </channel>
 </rss>
