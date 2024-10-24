@@ -1,26 +1,49 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="ko-kr" dir="ltr">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Details # Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
-Example # {{&lt; details &#34;Title&#34; [open] &gt;}} ## Markdown content Lorem markdownum insigne... {{&lt; /details &gt;}} {{&lt; details title=&#34;Title&#34; open=true &gt;}} ## Markdown content Lorem markdownum insigne... {{&lt; /details &gt;}} Title Markdown content # Lorem markdownum insigne&hellip;">
+<meta name="description" content="
+  Details
+  #
+
+Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
+
+  Example
+  #
+
+{{% details &#34;Title&#34; [open] %}}
+## Markdown content
+Lorem markdownum insigne...
+{{% /details %}}
+{{% details title=&#34;Title&#34; open=true %}}
+## Markdown content
+Lorem markdownum insigne...
+{{% /details %}}
+
+
+  Markdown content
+  #
+
+Lorem markdownum insigne&hellip;
+">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
-<meta property="og:description" content="Details # Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
-Example # {{&lt; details &#34;Title&#34; [open] &gt;}} ## Markdown content Lorem markdownum insigne... {{&lt; /details &gt;}} {{&lt; details title=&#34;Title&#34; open=true &gt;}} ## Markdown content Lorem markdownum insigne... {{&lt; /details &gt;}} Title Markdown content # Lorem markdownum insigne&hellip;" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.org/docs/shortcodes/details/" /><meta property="article:section" content="docs" />
-
-
-<title>Details | My New Hugo Site</title>
-<link rel="manifest" href="/manifest.json">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://example.org/docs/shortcodes/details/">
+  <meta property="og:site_name" content="개발자 서민규">
+  <meta property="og:title" content="개발자 서민규">
+  <meta property="og:description" content="Details # Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
+Example # {{% details &#34;Title&#34; [open] %}} ## Markdown content Lorem markdownum insigne... {{% /details %}} {{% details title=&#34;Title&#34; open=true %}} ## Markdown content Lorem markdownum insigne... {{% /details %}} Markdown content # Lorem markdownum insigne…">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Details | 개발자 서민규</title>
 <link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="https://example.org/docs/shortcodes/details/">
-<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
-  <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.70b098285191f12b6c58b51e63c85b638878bf85276b89a41f1fafaf8d4772e1.js" integrity="sha256-cLCYKFGR8StsWLUeY8hbY4h4v4Una4mkHx&#43;vr41HcuE=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.e27bd1916255a9579b618645d2a57f2b4eb1911809f205c01c952b6264f08f16.js" integrity="sha256-4nvRkWJVqVebYYZF0qV/K06xkRgJ8gXAHJUrYmTwjxY=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -36,16 +59,17 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>My New Hugo Site</span>
+  <a class="flex align-center" href="/"><span>개발자 서민규</span>
   </a>
 </h2>
 
 
-<div class="book-search">
+<div class="book-search hidden">
   <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
   <div class="book-search-spinner hidden"></div>
   <ul id="book-search-results"></ul>
 </div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
 
 
 
@@ -58,7 +82,6 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  
 
 
 
@@ -238,19 +261,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/shortcodes/expand/" class="">Expand</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/shortcodes/hints/" class="">Hints</a>
   
 
@@ -359,7 +369,6 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-
   
 <ul>
   
@@ -396,7 +405,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Details</strong>
+  <h3>Details</h3>
 
   <label for="toc-control">
     
@@ -413,6 +422,7 @@ https://github.com/alex-shpak/hugo-book
 <nav id="TableOfContents">
   <ul>
     <li><a href="#example">Example</a></li>
+    <li><a href="#markdown-content">Markdown content</a></li>
   </ul>
 </nav>
 
@@ -434,24 +444,21 @@ https://github.com/alex-shpak/hugo-book
   Example
   <a class="anchor" href="#example">#</a>
 </h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">details</span> <span style="color:#e6db74">&#34;Title&#34;</span> <span style="color:#f92672">[</span><span style="color:#a6e22e">open</span><span style="color:#f92672">]</span> <span style="color:#f92672">&gt;</span><span style="color:#75715e">}}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">%</span> <span style="color:#a6e22e">details</span> <span style="color:#e6db74">&#34;Title&#34;</span> <span style="color:#f92672">[</span><span style="color:#a6e22e">open</span><span style="color:#f92672">]</span> <span style="color:#f92672">%</span><span style="color:#75715e">}}</span>
 </span></span><span style="display:flex;"><span>## Markdown content
 </span></span><span style="display:flex;"><span>Lorem markdownum insigne...
-</span></span><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">details</span> <span style="color:#f92672">&gt;</span><span style="color:#75715e">}}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">details</span> <span style="color:#a6e22e">title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Title&#34;</span> <span style="color:#a6e22e">open</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span> <span style="color:#f92672">&gt;</span><span style="color:#75715e">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">%</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">details</span> <span style="color:#f92672">%</span><span style="color:#75715e">}}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tpl" data-lang="tpl"><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">%</span> <span style="color:#a6e22e">details</span> <span style="color:#a6e22e">title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Title&#34;</span> <span style="color:#a6e22e">open</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span> <span style="color:#f92672">%</span><span style="color:#75715e">}}</span>
 </span></span><span style="display:flex;"><span>## Markdown content
 </span></span><span style="display:flex;"><span>Lorem markdownum insigne...
-</span></span><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">&lt;</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">details</span> <span style="color:#f92672">&gt;</span><span style="color:#75715e">}}</span>
-</span></span></code></pre></div><details open><summary>Title</summary>
-  <div class="markdown-inner">
-    <h2 id="markdown-content">
+</span></span><span style="display:flex;"><span><span style="color:#75715e">{{</span><span style="color:#f92672">%</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">details</span> <span style="color:#f92672">%</span><span style="color:#75715e">}}</span>
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="markdown-content">
   Markdown content
   <a class="anchor" href="#markdown-content">#</a>
 </h2>
 <p>Lorem markdownum insigne&hellip;</p>
-  </div>
-</details>
-
+<!-- raw HTML omitted -->
 </article>
  
       
@@ -494,6 +501,7 @@ https://github.com/alex-shpak/hugo-book
 <nav id="TableOfContents">
   <ul>
     <li><a href="#example">Example</a></li>
+    <li><a href="#markdown-content">Markdown content</a></li>
   </ul>
 </nav>
 

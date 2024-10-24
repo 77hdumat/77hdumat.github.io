@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="ko-kr" dir="ltr">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:title" content="Tags" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://example.org/tags/" />
-<title>Tags | My New Hugo Site</title>
-<link rel="manifest" href="/manifest.json">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://example.org/tags/">
+  <meta property="og:site_name" content="개발자 서민규">
+  <meta property="og:title" content="Tags">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="website">
+<title>Tags | 개발자 서민규</title>
 <link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="https://example.org/tags/">
-<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
-  <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.70b098285191f12b6c58b51e63c85b638878bf85276b89a41f1fafaf8d4772e1.js" integrity="sha256-cLCYKFGR8StsWLUeY8hbY4h4v4Una4mkHx&#43;vr41HcuE=" crossorigin="anonymous"></script>
-<link rel="alternate" type="application/rss+xml" href="https://example.org/tags/index.xml" title="My New Hugo Site" />
+<link rel="stylesheet" href="/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.e27bd1916255a9579b618645d2a57f2b4eb1911809f205c01c952b6264f08f16.js" integrity="sha256-4nvRkWJVqVebYYZF0qV/K06xkRgJ8gXAHJUrYmTwjxY=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://example.org/tags/index.xml" title="개발자 서민규" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -33,16 +34,17 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>My New Hugo Site</span>
+  <a class="flex align-center" href="/"><span>개발자 서민규</span>
   </a>
 </h2>
 
 
-<div class="book-search">
+<div class="book-search hidden">
   <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
   <div class="book-search-spinner hidden"></div>
   <ul id="book-search-results"></ul>
 </div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
 
 
 
@@ -55,7 +57,6 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-  
 
 
 
@@ -235,19 +236,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/shortcodes/expand/" class="">Expand</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/shortcodes/hints/" class="">Hints</a>
   
 
@@ -356,7 +344,6 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-
   
 <ul>
   
@@ -393,7 +380,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Tags</strong>
+  <h3>Tags</h3>
 
   <label for="toc-control">
     
@@ -484,15 +471,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/development/">Development</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>
@@ -504,15 +492,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/go/">Go</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>
@@ -524,15 +513,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/golang/">Golang</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>
@@ -544,15 +534,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/hugo/">Hugo</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>
@@ -564,15 +555,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/templates/">Templates</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>
@@ -584,15 +576,16 @@ https://github.com/alex-shpak/hugo-book
       <a href="/tags/themes/">Themes</a>
     </h2>
     
-  <h5>April 2, 2014</h5>
+  <div class="flex align-center text-small book-post-date">
+    <img src="/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 2, 2014</span>
+  </div>
 
 
 
   
 
   
-
-
 
 
     <p>

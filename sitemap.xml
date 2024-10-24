@@ -19,10 +19,13 @@
     <loc>https://example.org/docs/example/collapsed/</loc>
   </url><url>
     <loc>https://example.org/posts/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-24T19:19:49+09:00</lastmod>
   </url><url>
     <loc>https://example.org/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-24T19:19:49+09:00</lastmod>
+  </url><url>
+    <loc>https://example.org/posts/test/</loc>
+    <lastmod>2024-10-24T19:19:49+09:00</lastmod>
   </url><url>
     <loc>https://example.org/posts/goisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
@@ -73,8 +76,6 @@
     <loc>https://example.org/docs/shortcodes/columns/</loc>
   </url><url>
     <loc>https://example.org/docs/shortcodes/details/</loc>
-  </url><url>
-    <loc>https://example.org/docs/shortcodes/expand/</loc>
   </url><url>
     <loc>https://example.org/docs/shortcodes/hints/</loc>
   </url><url>
