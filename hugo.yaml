@@ -1,0 +1,6 @@
+theme: hugo-book
+baseURL: https://example.org/
+languageCode: ko-kr
+title: 개발자 서민규
+markup:
+  defaultMarkdownHandler: goldmark
