@@ -4,3 +4,5 @@ languageCode: ko-kr
 title: 서민규
 markup:
   defaultMarkdownHandler: goldmark
+ignoreLogs:
+  - warning-goldmark-raw-html
