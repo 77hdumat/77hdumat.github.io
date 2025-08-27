@@ -1,7 +1,7 @@
 theme: hugo-book
 baseURL: https://77hdumat.github.io/
 languageCode: ko-kr
-title: 서민규
+title: 서민규 테스트
 markup:
   defaultMarkdownHandler: goldmark
 ignoreLogs:
