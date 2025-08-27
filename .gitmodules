@@ -3,5 +3,5 @@
 	url = https://github.com/5hdumat/hugo-book
 [submodule "public"]
 	path = public
-	url = https://github.com/5hdumat/5hdumat.github.io.git
+	url = https://github.com/77hdumat/77hdumat.github.io.git
 	branch = github-pages
