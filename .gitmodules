@@ -1,7 +1,8 @@
-[submodule "themes/hugo-book"]
-	path = themes/hugo-book
-	url = https://github.com/77hdumat/hugo-book.git
 [submodule "public"]
 	path = public
 	url = https://github.com/77hdumat/77hdumat.github.io.git
 	branch = github-pages
+[submodule "themes/hugo-book"]
+	path = themes/hugo-book
+	url = https://github.com/77hdumat/hugo-book.git
+	branch = main
