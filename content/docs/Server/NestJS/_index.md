@@ -1,4 +1,4 @@
 ---
+title: NestJS
 bookCollapseSection: true
-weight: 20
 ---

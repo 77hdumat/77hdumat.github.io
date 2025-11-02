@@ -1,0 +1,17 @@
+<!-- Utterances comments - Hide on homepage -->
+{{ if not .IsHome }}
+<script src="https://utteranc.es/client.js"
+        repo="77hdumat/77hdumat.github.io"
+        issue-term="pathname"
+        label="comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<style>
+  .utterances {
+    max-width: 100%;
+  }
+</style>
+{{ end }}
