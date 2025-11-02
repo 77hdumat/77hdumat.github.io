@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on 서민규</title>
-    <link>https://77hdumat.github.io/posts/</link>
-    <description>Recent content in Blog on 서민규</description>
+    <title>Blog2 on 서민규</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Blog2 on 서민규</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
     <lastBuildDate>Thu, 24 Oct 2024 19:19:49 +0900</lastBuildDate>
-    <atom:link href="https://77hdumat.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Creating a New Theme</title>
-      <link>https://77hdumat.github.io/posts/creating-a-new-theme/</link>
+      <link>http://localhost:1313/posts/creating-a-new-theme/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      <guid>https://77hdumat.github.io/posts/creating-a-new-theme/</guid>
+      <guid>http://localhost:1313/posts/creating-a-new-theme/</guid>
       <description>&lt;h2 id=&#34;introduction-test&#34;&gt;&#xA;  Introduction Test&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#introduction-test&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ll start with creating a new site with a very basic template. Then we&amp;rsquo;ll add in a few pages and posts. With small variations on that, you will be able to create many different types of web sites.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Migrate to Hugo from Jekyll</title>
-      <link>https://77hdumat.github.io/posts/migrate-from-jekyll/</link>
+      <link>http://localhost:1313/posts/migrate-from-jekyll/</link>
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      <guid>https://77hdumat.github.io/posts/migrate-from-jekyll/</guid>
+      <guid>http://localhost:1313/posts/migrate-from-jekyll/</guid>
       <description>&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;&#xA;  Move static content to &lt;code&gt;static&lt;/code&gt;&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#move-static-content-to-static&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output. Hugo keeps all static content under &lt;code&gt;static&lt;/code&gt;. You should therefore move it all there.&#xA;With Jekyll, something that looked like&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/&#xA;    ▾ images/&#xA;        logo.png&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;should become&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/&#xA;    ▾ static/&#xA;        ▾ images/&#xA;            logo.png&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as &lt;code&gt;CNAME&lt;/code&gt;) to be moved to &lt;code&gt;static&lt;/code&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Test</title>
-      <link>https://77hdumat.github.io/posts/test/</link>
+      <link>http://localhost:1313/posts/test/</link>
       <pubDate>Thu, 24 Oct 2024 19:19:49 +0900</pubDate>
-      <guid>https://77hdumat.github.io/posts/test/</guid>
+      <guid>http://localhost:1313/posts/test/</guid>
       <description>&lt;p&gt;안녕하세요!&lt;/p&gt;</description>
     </item>
     <item>
       <title>(Hu)go Template Primer</title>
-      <link>https://77hdumat.github.io/posts/goisforlovers/</link>
+      <link>http://localhost:1313/posts/goisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      <guid>https://77hdumat.github.io/posts/goisforlovers/</guid>
+      <guid>http://localhost:1313/posts/goisforlovers/</guid>
       <description>&lt;p&gt;Hugo uses the excellent &lt;a href=&#34;https://golang.org/&#34;&gt;Go&lt;/a&gt; &lt;a href=&#34;https://golang.org/pkg/html/template/&#34;&gt;html/template&lt;/a&gt; library for&#xA;its template engine. It is an extremely lightweight engine that provides a very&#xA;small amount of logic. In our experience that it is just the right amount of&#xA;logic to be able to create a good static website. If you have used other&#xA;template systems from different languages or frameworks you will find a lot of&#xA;similarities in Go templates.&lt;/p&gt;&#xA;&lt;p&gt;This document is a brief primer on using Go templates. The &lt;a href=&#34;https://golang.org/pkg/html/template/&#34;&gt;Go docs&lt;/a&gt;&#xA;provide more details.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Getting Started with Hugo</title>
-      <link>https://77hdumat.github.io/posts/hugoisforlovers/</link>
+      <link>http://localhost:1313/posts/hugoisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      <guid>https://77hdumat.github.io/posts/hugoisforlovers/</guid>
+      <guid>http://localhost:1313/posts/hugoisforlovers/</guid>
       <description>&lt;h2 id=&#34;step-1-install-hugo&#34;&gt;&#xA;  Step 1. Install Hugo&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#step-1-install-hugo&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Go to &lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;Hugo releases&lt;/a&gt; and download the&#xA;appropriate version for your OS and architecture.&lt;/p&gt;&#xA;&lt;p&gt;Save it somewhere specific as we will be using it in the next step.&lt;/p&gt;&#xA;&lt;p&gt;More complete instructions are available at &lt;a href=&#34;https://gohugo.io/getting-started/installing/&#34;&gt;Install Hugo&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;step-2-build-the-docs&#34;&gt;&#xA;  Step 2. Build the Docs&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#step-2-build-the-docs&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Hugo has its own example site which happens to also be the documentation site&#xA;you are reading right now.&lt;/p&gt;&#xA;&lt;p&gt;Follow the following steps:&lt;/p&gt;</description>
     </item>
     <item>
       <title></title>
-      <link>https://77hdumat.github.io/posts/post/</link>
+      <link>http://localhost:1313/posts/post/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://77hdumat.github.io/posts/post/</guid>
+      <guid>http://localhost:1313/posts/post/</guid>
       <description>&lt;h1 id=&#34;hugo-book-theme&#34;&gt;&#xA;  Hugo Book Theme&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hugo-book-theme&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://gohugo.io&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/hugo-0.79-blue.svg&#34; alt=&#34;Hugo&#34; /&gt;&lt;/a&gt;&#xA;&lt;a href=&#34;LICENSE&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/License-MIT-blue.svg&#34; alt=&#34;License: MIT&#34; /&gt;&lt;/a&gt;&#xA;&lt;img src=&#34;https://github.com/alex-shpak/hugo-book/workflows/Build%20with%20Hugo/badge.svg&#34; alt=&#34;Build with Hugo&#34; /&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;hugo-documentation-theme-as-simple-as-plain-book&#34;&gt;&#xA;  &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt; documentation theme as simple as plain book&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hugo-documentation-theme-as-simple-as-plain-book&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/alex-shpak/hugo-book/master/images/screenshot.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#features&#34;&gt;Features&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#requirements&#34;&gt;Requirements&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#installation&#34;&gt;Installation&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#menu&#34;&gt;Menu&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#blog&#34;&gt;Blog&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#configuration&#34;&gt;Configuration&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#shortcodes&#34;&gt;Shortcodes&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#versioning&#34;&gt;Versioning&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#contributing&#34;&gt;Contributing&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;features&#34;&gt;&#xA;  Features&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#features&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Clean simple design&lt;/li&gt;&#xA;&lt;li&gt;Light and Mobile-Friendly&lt;/li&gt;&#xA;&lt;li&gt;Multi-language support&lt;/li&gt;&#xA;&lt;li&gt;Customisable&lt;/li&gt;&#xA;&lt;li&gt;Zero initial configuration&lt;/li&gt;&#xA;&lt;li&gt;Handy shortcodes&lt;/li&gt;&#xA;&lt;li&gt;Comments support&lt;/li&gt;&#xA;&lt;li&gt;Simple blog and taxonomy&lt;/li&gt;&#xA;&lt;li&gt;Primary features work without JavaScript&lt;/li&gt;&#xA;&lt;li&gt;Dark Mode&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;requirements&#34;&gt;&#xA;  Requirements&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#requirements&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Hugo 0.79 or higher&lt;/li&gt;&#xA;&lt;li&gt;Hugo extended version, &lt;a href=&#34;https://gohugo.io/installation/&#34;&gt;Installation Instructions&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;installation&#34;&gt;&#xA;  Installation&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#installation&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;install-as-git-submodule&#34;&gt;&#xA;  Install as git submodule&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#install-as-git-submodule&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;Navigate to your hugo project root and run:&lt;/p&gt;</description>
     </item>
   </channel>
