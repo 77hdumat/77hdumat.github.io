@@ -16,9 +16,9 @@
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="https://77hdumat.github.io/404.html">
-<link rel="stylesheet" href="/book.min.be5a22d37cb186957d781a0719dfce4ca4dc1e8cb360734e2fa046445da41950.css" integrity="sha256-vloi03yxhpV9eBoHGd/OTKTcHoyzYHNOL6BGRF2kGVA=" crossorigin="anonymous">
+<link rel="stylesheet" href="/book.min.8ddd17c8d93130f7f078acf89384b307debea8f654c34b924e117efffad96352.css" integrity="sha256-jd0XyNkxMPfweKz4k4SzB96&#43;qPZUw0uSThF&#43;//rZY1I=" crossorigin="anonymous">
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.ecf64c3047ba4beb3f95b9817b62fe46906aa227cdfc16acc345e8ba8ad4a540.js" integrity="sha256-7PZMMEe6S&#43;s/lbmBe2L&#43;RpBqoifN/Basw0XouorUpUA=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.5c6980790a66712d8ea7eddee85cdf6e8be54a34d45cd474592b7728368c537a.js" integrity="sha256-XGmAeQpmcS2Op&#43;3e6FzfbovlSjTUXNR0WSt3KDaMU3o=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -26,6 +26,32 @@ https://github.com/alex-shpak/hugo-book
     
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<style>
+  #scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #9ca3af, #d1d5db, #6b7280);
+    z-index: 9999;
+    transition: width 0.15s ease-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<div id="scroll-progress"></div>
+
+<script>
+  window.addEventListener('scroll', function() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById('scroll-progress').style.width = scrolled + '%';
+  });
+</script>
 
     <style>
       .not-found {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko-kr" dir="ltr">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
@@ -14,7 +14,7 @@ MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존�
 지속 가능하고 간편한 캐시 관리 방안을 모색했습니다.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/server/nestjs/%EA%B3%A0%EA%B0%80%EC%9A%A9%EC%84%B1%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%BA%90%EC%8B%9C-%EB%AA%A8%EB%93%88-%EA%B0%9C%EC%84%A0%EA%B8%B0/">
   <meta property="og:site_name" content="서민규">
   <meta property="og:title" content="NestJS에서 Spring Boot Cache 흉내내기">
   <meta property="og:description" content="Pain Point # 최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다. 저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 ‘BFF(Backend for Frontend)’ 서버를 담당하고 있습니다.
@@ -27,10 +27,10 @@ MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존�
 <title>NestJS에서 Spring Boot Cache 흉내내기 | 서민규</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/">
+<link rel="canonical" href="http://localhost:1313/docs/server/nestjs/%EA%B3%A0%EA%B0%80%EC%9A%A9%EC%84%B1%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%BA%90%EC%8B%9C-%EB%AA%A8%EB%93%88-%EA%B0%9C%EC%84%A0%EA%B8%B0/">
 <link rel="stylesheet" href="/book.min.8ddd17c8d93130f7f078acf89384b307debea8f654c34b924e117efffad96352.css" integrity="sha256-jd0XyNkxMPfweKz4k4SzB96&#43;qPZUw0uSThF&#43;//rZY1I=" crossorigin="anonymous">
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.5c6980790a66712d8ea7eddee85cdf6e8be54a34d45cd474592b7728368c537a.js" integrity="sha256-XGmAeQpmcS2Op&#43;3e6FzfbovlSjTUXNR0WSt3KDaMU3o=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.ecad675aa28781ce7bf1041a280cdd034b27472ebcea54317b60bb704440f698.js" integrity="sha256-7K1nWqKHgc578QQaKAzdA0snRy686lQxe2C7cERA9pg=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -46,11 +46,10 @@ https://github.com/alex-shpak/hugo-book
     top: 0;
     left: 0;
     width: 0%;
-    height: 2px;
-    background: linear-gradient(90deg, #9ca3af, #d1d5db, #6b7280);
+    height: 3px;
+    background: linear-gradient(90deg, #614CF6, #F6A54C);
     z-index: 9999;
-    transition: width 0.15s ease-out;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: width 0.1s ease-out;
   }
 </style>
 
@@ -144,7 +143,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/" class="active">NestJS에서 Spring Boot Cache 흉내내기</a>
+    <a href="/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/" class="">NestJS에서 Spring Boot Cache 흉내내기</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/server/nestjs/%EA%B3%A0%EA%B0%80%EC%9A%A9%EC%84%B1%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%BA%90%EC%8B%9C-%EB%AA%A8%EB%93%88-%EA%B0%9C%EC%84%A0%EA%B8%B0/" class="active">NestJS에서 Spring Boot Cache 흉내내기</a>
   
 
         </li>
@@ -692,6 +704,20 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/" class="flex align-center book-icon">
+        <img src="/svg/backward.svg" class="book-icon" alt="Previous" title="NestJS에서 Spring Boot Cache 흉내내기" />
+        <span>NestJS에서 Spring Boot Cache 흉내내기</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
   
 
 
