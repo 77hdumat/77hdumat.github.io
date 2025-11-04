@@ -85,14 +85,14 @@ async getPaymentsKey(@Ctx() user: UserContext) {
 캐시 네임스페이스 / 메서드 실행 전, 후 평가 / 캐시 전략 선택 등 다양한 옵션들을 추려보았습니다. BFF 서비스에서 사용하기에 부족하지 않은 옵션들 입니다.
 하지만 구현하기에 앞서 한가지 큰 문제에 직면합니다.
 
-## NestJS에서 선언적 캐싱 사용하기
+## NestJS에 AOP 적용하기 
 
 NestJS는 Spring Boot의 AOP(Aspect-Oriented Programming) 즉, 메서드 호출을 가로채 실행 전 후로 원하는 로직을 실행 시킬 수 있는 횡단 관심사 기능을 제공하고 있지 않다는 점입니다.
 그렇다면 NestJS에서 선언적 캐시를 위한 데코레이터를 어떻게 구현할 수 있을까요? (비슷한 기능으로 interceptor가 있지만 라우트 핸들러에서만 동작하기 때문에 적합하지 않습니다.)
 
 간단한 해결책으로 **[@toss/nestjs-aop](https://github.com/toss/nestjs-aop)** 를 사용했습니다. [^1]
 
-'nestjs-aop' 는 라우터 핸들러에서만 동작하는 Interceptor가 아닌 부팅 라이프 사이클(OnModuleInit)을 이용해 DI 컨테이너가 초기화된 후, AOP의 대상이 되는 메서드를 찾아 **런타임에 직접 교체(Monkey-Patching)** 하는 원리로
+**nestjs-aop**는 라우터 핸들러에서만 동작하는 Interceptor가 아닌 부팅 라이프 사이클(OnModuleInit)을 이용해 DI 컨테이너가 초기화된 후, AOP의 대상이 되는 메서드를 찾아 **런타임에 직접 교체(Monkey-Patching)** 하는 원리로
 서비스 내부 메서드를 포함한 모든 프로바이더에 AOP를 적용할 수 있게 합니다.
 
 내부 동작 원리는 크게 **[마킹] → [탐색] → [교체] → [실행]** 4단계로 나뉩니다.
@@ -141,7 +141,7 @@ export const createDecorator = (
 'descriptor' 는 자바스크립트 런타임이 메서드 데코레이터가 실행될 때 자동으로 전달하는 표준 내장 객체입니다. 
 해당 인자는 자바스크립트의 `Object.getOwnPropertyDescriptor()`과 동일합니다. 
 
-DMN 공식 문서[^2]에 따르면 주어진 객체는 속성 설명자(descriptor)를 반환하고, 반환 속성은 다음과 같다고합니다.
+DMN 공식 문서에 따르면 주어진 객체는 속성 설명자(descriptor)를 반환하고, 반환 속성은 다음과 같다고합니다. [^2]
 
 - value: 원본 메서드 (originalFn)
 - writable: 값을 덮어쓸 수 있는지 여부
@@ -322,6 +322,8 @@ wrap({ method, metadata: options }) {
 ```
 
 간단(?)하게 내부 동작 원리를 살펴보았으니 이제 구현만 하면 되겠습니다.
+
+## 구현하기
 
 [^1]: [@toss/nestjs-aop](https://github.com/toss/nestjs-aop)
 [^2]: [MDN - Object.getOwnPropertyDescriptor()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)

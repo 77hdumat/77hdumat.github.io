@@ -60,7 +60,7 @@ samp,
 .markdown pre {
   position: relative;
   margin: 1.5rem 0 !important;
-  padding: 3rem 1.5rem 1.25rem !important; /* Extra padding for header */
+  padding: 2.5rem 1.5rem 1.25rem !important; /* Extra padding for header */
   overflow-x: auto !important;
   border-radius: 0.75rem;
   background: #282c34 !important;
@@ -75,7 +75,7 @@ samp,
     top: 0;
     left: 0;
     right: 0;
-    height: 2.5rem;
+    height: 2rem;
     background: #21252b;
     border-radius: 0.75rem 0.75rem 0 0;
     border-bottom: 1px solid #181a1f;
@@ -85,15 +85,15 @@ samp,
   &::after {
     content: '';
     position: absolute;
-    top: 1rem;
+    top: 0.65rem;
     left: 1rem;
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     background: #ff5f56;
     border-radius: 50%;
     box-shadow:
-      20px 0 0 #ffbd2e,
-      40px 0 0 #27c93f;
+      18px 0 0 #ffbd2e,
+      36px 0 0 #27c93f;
   }
 
   /* Enable smooth scrolling */
