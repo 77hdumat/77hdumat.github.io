@@ -13,7 +13,7 @@
       <link>https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/</link>
       <pubDate>Sun, 02 Nov 2025 00:00:00 +0000</pubDate>
       <guid>https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/</guid>
-      <description>&lt;h2 id=&#34;pain-point&#34;&gt;&#xA;  Pain Point&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#pain-point&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다.&#xA;저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 &amp;lsquo;BFF(Backend for Frontend)&amp;rsquo; 서버를 담당하고 있습니다.&lt;/p&gt;&#xA;&lt;p&gt;MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존하다 보니, 트래픽이 집중될 때 병목 현상이 발생하기 가장 쉬운 구간이었습니다.&#xA;이 문제를 빠르게 해결하기 위해 (판교 사투리로 ASAP&amp;hellip;😅) 기존 비즈니스 로직과 복잡하게 얽혀있던 캐시 구현을 모두 걷어낸 후, 지속 가능하고 편한 캐시 관리 방안을 모색했습니다.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;pain-point&#34;&gt;&#xA;  Pain Point&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#pain-point&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다.&#xA;저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 &amp;lsquo;BFF(Backend for Frontend)&amp;rsquo; 서버를 담당하고 있습니다.&lt;/p&gt;&#xA;&lt;p&gt;MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존하다 보니, 트래픽이 집중될 때 병목 현상이 발생하기 가장 쉬운 구간이었습니다.&#xA;이 문제를 빠르게 해결하기 위해 (판교 사투리로 ASAP 이라고 하나요?&amp;hellip;😅) 기존 비즈니스 로직과 복잡하게 얽혀있던 캐시 구현을 모두 걷어낸 후, 지속 가능하고 편한 캐시 관리 방안을 모색했습니다.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
