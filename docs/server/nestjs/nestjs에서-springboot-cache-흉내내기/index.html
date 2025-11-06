@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
-  Pain Point
+  페인 포인트
   #
 
 최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다.
@@ -16,7 +16,7 @@ MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존�
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/">
   <meta property="og:site_name" content="서민규">
   <meta property="og:title" content="NestJS에서 Spring Boot Cache 흉내내기">
-  <meta property="og:description" content="Pain Point # 최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다. 저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 ‘BFF(Backend for Frontend)’ 서버를 담당하고 있습니다.
+  <meta property="og:description" content="페인 포인트 # 최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다. 저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 ‘BFF(Backend for Frontend)’ 서버를 담당하고 있습니다.
 MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존하다 보니, 트래픽이 집중될 때 병목 현상이 발생하기 가장 쉬운 구간이었습니다. 이 문제를 빠르게 해결하기 위해 (판교 사투리로 ASAP 이라고 하나요?…😅) 기존 비즈니스 로직과 복잡하게 얽혀있던 캐시 구현을 모두 걷어낸 후, 지속 가능하고 편한 캐시 관리 방안을 모색했습니다.">
   <meta property="og:locale" content="ko_kr">
   <meta property="og:type" content="article">
@@ -27,9 +27,9 @@ MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존�
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="https://77hdumat.github.io/docs/server/nestjs/nestjs%EC%97%90%EC%84%9C-springboot-cache-%ED%9D%89%EB%82%B4%EB%82%B4%EA%B8%B0/">
-<link rel="stylesheet" href="/book.min.8ddd17c8d93130f7f078acf89384b307debea8f654c34b924e117efffad96352.css" integrity="sha256-jd0XyNkxMPfweKz4k4SzB96&#43;qPZUw0uSThF&#43;//rZY1I=" crossorigin="anonymous">
+<link rel="stylesheet" href="/book.min.07600cebb36b9fb876c33f623f7bc99933c2bbd8bd3e6d03d46a19d1874c1ff6.css" integrity="sha256-B2AM67Nrn7h2wz9iP3vJmTPCu9i9Pm0D1GoZ0YdMH/Y=" crossorigin="anonymous">
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.d55ec4bf4f99b7d1fab710e99ad7ad35710e745d54c7a032062f369c37532751.js" integrity="sha256-1V7Ev0&#43;Zt9H6txDpmtetNXEOdF1Ux6AyBi82nDdTJ1E=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.6c4b56f9894b46dfd49663556996927b0d36048255f8cab341dad5aafbb6f56d.js" integrity="sha256-bEtW&#43;YlLRt/UlmNVaZaSew02BIJV&#43;MqzQdrVqvu29W0=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -245,7 +245,7 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#pain-point">Pain Point</a></li>
+    <li><a href="#페인-포인트">페인 포인트</a></li>
     <li><a href="#spring-boot-cache-참고하기">Spring Boot Cache 참고하기</a>
       <ul>
         <li><a href="#cacheable">@Cacheable</a></li>
@@ -274,14 +274,14 @@ https://github.com/alex-shpak/hugo-book
       
 <article class="markdown book-article">
   <div class="book-page-header">
-    <h1 class="book-page-title">NestJS에서 Spring Boot Cache 흉내내기</h1>
+    <div class="book-page-title">NestJS에서 Spring Boot Cache 흉내내기</div>
     <div class="book-page-meta-row">
       <div class="book-page-reading-time">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
-        <span>15분</span>
+        <span>15 minutes</span>
       </div>
       
       <time class="book-page-date" datetime="2025-11-02">
@@ -299,9 +299,9 @@ https://github.com/alex-shpak/hugo-book
 </article>
 
       
-  <article class="markdown book-article"><h2 id="pain-point">
-  Pain Point
-  <a class="anchor" href="#pain-point">#</a>
+  <article class="markdown book-article"><h2 id="페인-포인트">
+  페인 포인트
+  <a class="anchor" href="#%ed%8e%98%ec%9d%b8-%ed%8f%ac%ec%9d%b8%ed%8a%b8">#</a>
 </h2>
 <p>최근 큰 규모의 고객사가 사내 서비스로 이전하게 되면서 서비스 전반의 부하 안정성 개선이 최우선 과제로 떠올랐습니다.
 저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 &lsquo;BFF(Backend for Frontend)&rsquo; 서버를 담당하고 있습니다.</p>
@@ -364,24 +364,24 @@ https://github.com/alex-shpak/hugo-book
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>cacheNames</code> / <code>value</code></td>
+          <td style="text-align: left">cacheNames / value</td>
           <td style="text-align: left">캐시를 그룹화하는 네임스페이스</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>key</code></td>
+          <td style="text-align: left">key</td>
           <td style="text-align: left">캐시 항목을 식별하는 고유 키</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>cacheManager</code></td>
+          <td style="text-align: left">cacheManager</td>
           <td style="text-align: left">여러 캐시 전략(Redis, Memory) 중 하나 선택</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>condition</code></td>
-          <td style="text-align: left"><strong>메서드 실행 전</strong> 캐시 로직을 실행할지 결정하는 SpEL</td>
+          <td style="text-align: left">condition</td>
+          <td style="text-align: left">메서드 실행 전 캐시 로직을 실행할지 결정하는 SpEL</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>unless</code></td>
-          <td style="text-align: left"><strong>메서드 실행 후</strong> 결과값을 캐시에 저장할지 결정하는 SpEL</td>
+          <td style="text-align: left">unless</td>
+          <td style="text-align: left">메서드 실행 후 결과값을 캐시에 저장할지 결정하는 SpEL</td>
       </tr>
   </tbody>
 </table>
@@ -398,28 +398,28 @@ https://github.com/alex-shpak/hugo-book
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>cacheNames</code> / <code>value</code></td>
+          <td style="text-align: left">cacheNames / value</td>
           <td style="text-align: left">삭제할 캐시가 속한 네임스페이스</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>key</code></td>
+          <td style="text-align: left">key</td>
           <td style="text-align: left">삭제할 특정 캐시 항목의 키</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>cacheManager</code></td>
+          <td style="text-align: left">cacheManager</td>
           <td style="text-align: left">캐시 삭제를 수행할 캐시 매니저를 선택</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>condition</code></td>
-          <td style="text-align: left"><strong>메서드 실행 전</strong> 캐시 삭제 로직을 실행할지 결정하는 함수</td>
+          <td style="text-align: left">condition</td>
+          <td style="text-align: left">메서드 실행 전 캐시 삭제 로직을 실행할지 결정하는 함수</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>allEntries</code></td>
+          <td style="text-align: left">allEntries</td>
           <td style="text-align: left"><code>true</code>일 경우, <code>key</code>와 무관하게 네임스페이스의 모든 항목을 삭제</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>beforeInvocation</code></td>
-          <td style="text-align: left"><code>true</code>일 경우, 메서드 실행 <strong>전</strong>에 캐시 삭제 (메서드 성공 여부와 무관)</td>
+          <td style="text-align: left">beforeInvocation</td>
+          <td style="text-align: left"><code>true</code>일 경우, 메서드 실행 전 캐시 삭제 (메서드 성공 여부와 무관)</td>
       </tr>
   </tbody>
 </table>
@@ -432,7 +432,7 @@ https://github.com/alex-shpak/hugo-book
 <p>NestJS는 Spring Boot의 AOP(Aspect-Oriented Programming) 즉, 메서드 호출을 가로채 실행 전 후로 원하는 로직을 실행 시킬 수 있는 횡단 관심사 기능을 제공하고 있지 않다는 점입니다.
 그렇다면 NestJS에서 선언적 캐시를 위한 데코레이터를 어떻게 구현할 수 있을까요? (비슷한 기능으로 interceptor가 있지만 라우트 핸들러에서만 동작하기 때문에 적합하지 않습니다.)</p>
 <p>간단한 해결책으로 <strong><a href="https://github.com/toss/nestjs-aop">@toss/nestjs-aop</a></strong> 를 사용했습니다. <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
-<p><strong>nestjs-aop</strong>는 라우터 핸들러에서만 동작하는 Interceptor가 아닌 부팅 라이프 사이클(OnModuleInit)을 이용해 DI 컨테이너가 초기화된 후, AOP의 대상이 되는 메서드를 찾아 <strong>런타임에 직접 교체(Monkey-Patching)</strong> 하는 원리로
+<p><strong>nestjs-aop</strong>는 라우터 핸들러에서만 동작하는 Interceptor가 아닌 부팅 라이프 사이클을 이용해 DI 컨테이너가 초기화된 후, AOP의 대상이 되는 메서드를 찾아 <strong>런타임에 직접 교체(Monkey-Patching)</strong> 하는 원리로
 서비스 내부 메서드를 포함한 모든 프로바이더에 AOP를 적용할 수 있게 합니다.</p>
 <p>내부 동작 원리는 크게 <strong>[마킹] → [탐색] → [교체] → [실행]</strong> 4단계로 나뉩니다.</p>
 <h3 id="마킹">
@@ -440,42 +440,46 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#%eb%a7%88%ed%82%b9">#</a>
 </h3>
 <p>metadata 식별자와 metadata를 인자로 받아 고유한 AOP 심볼로 데코레이터를 생성합니다. <code>applyDecorators</code> 를 통해 두 개의 데코레이터 함수를 순차적으로 적용합니다.
-코드를 주석으로 살펴보면 다음과 같습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createDecorator</span> <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">metadataKey</span>: <span style="color:#66d9ef">symbol</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">string</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">metadata?</span>: <span style="color:#66d9ef">unknown</span>,
-</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">:</span> <span style="color:#a6e22e">MethodDecorator</span> <span style="color:#f92672">=&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aopSymbol</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#39;AOP_DECORATOR&#39;</span>); <span style="color:#75715e">// 고유 심볼
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">applyDecorators</span>(
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 메타데이터 저장
+코드를 살펴보면 다음과 같습니다.</p>
+<div class="highlight" title="create-decorator.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createDecorator</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">metadataKey</span>: <span style="color:#66d9ef">symbol</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">string</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">metadata?</span>: <span style="color:#66d9ef">unknown</span>,
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">MethodDecorator</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aopSymbol</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#39;AOP_DECORATOR&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">applyDecorators</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 1. 메타 데이터 저장 (Reflect를 통해 메서드에 부착되고 추후 Discovery 과정에서 식별됩니다.)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        (<span style="color:#a6e22e">target</span>: <span style="color:#66d9ef">object</span>, <span style="color:#a6e22e">propertyKey</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">symbol</span>, <span style="color:#a6e22e">descriptor</span>: <span style="color:#66d9ef">PropertyDescriptor</span>) <span style="color:#f92672">=&gt;</span> {
-</span></span><span style="display:flex;"><span>          <span style="color:#75715e">// Reflect를 통해 메서드에 부착되고 추후 Discovery 과정에서 식별됩니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">AddMetadata</span>&lt;<span style="color:#f92672">symbol</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#a6e22e">string</span>, <span style="color:#a6e22e">AopMetadata</span>&gt;(<span style="color:#a6e22e">metadataKey</span>, {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">originalFn</span>: <span style="color:#66d9ef">descriptor.value</span>, <span style="color:#75715e">// 원본 메서드 (임시 저장, wrapMethod 참고)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">metadata</span>, <span style="color:#75715e">// 데코레이터에 전달된 인자
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">aopSymbol</span>,
-</span></span><span style="display:flex;"><span>          })(<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">propertyKey</span>, <span style="color:#a6e22e">descriptor</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">AddMetadata</span>&lt;<span style="color:#f92672">symbol</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#a6e22e">string</span>, <span style="color:#a6e22e">AopMetadata</span>&gt;(<span style="color:#a6e22e">metadataKey</span>, {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">originalFn</span>: <span style="color:#66d9ef">descriptor.value</span>, <span style="color:#75715e">// 원본 메서드 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">metadata</span>, <span style="color:#75715e">// 데코레이터에 전달된 옵션 인자
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">aopSymbol</span>, <span style="color:#75715e">// 고유 심볼
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            })(<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">propertyKey</span>, <span style="color:#a6e22e">descriptor</span>);
 </span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 원본 메서드에 프록시 메서드 덮어쓰기 
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 2. 원본 메서드에 프록시 메서드 Wrapping 
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        (<span style="color:#a6e22e">_</span>: <span style="color:#66d9ef">object</span>, <span style="color:#a6e22e">propertyKey</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">symbol</span>, <span style="color:#a6e22e">descriptor</span>: <span style="color:#66d9ef">PropertyDescriptor</span>) <span style="color:#f92672">=&gt;</span> {
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">originalFn</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#66d9ef">this</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">any</span>, ...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">unknown</span>[]) {
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 데코레이터가 붙은 메서드가 호출되면, 런타임은 원본 함수 대신 wrappedFn 함수를 실행하게 됩니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrappedFn</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">aopSymbol</span>]<span style="color:#f92672">?</span>.[<span style="color:#a6e22e">propertyKey</span>]; 
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">wrappedFn</span>) {
-</span></span><span style="display:flex;"><span>              <span style="color:#75715e">// wrap 함수 실행
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>              <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">wrappedFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
-</span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>      
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// AopModule이 없거나 실패한 경우 원본 메서드 실행 (Fallback)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">originalFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
-</span></span><span style="display:flex;"><span>          };
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    ...
-</span></span></code></pre></div><p>&lsquo;descriptor&rsquo; 는 자바스크립트 런타임이 메서드 데코레이터가 실행될 때 자동으로 전달하는 표준 내장 객체입니다.
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">originalFn</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#66d9ef">this</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">any</span>, ...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">unknown</span>[]) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 데코레이터가 붙은 메서드가 호출되면, 런타임은 원본 함수 대신 wrappedFn 함수를 실행하게 됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrappedFn</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">aopSymbol</span>]<span style="color:#f92672">?</span>.[<span style="color:#a6e22e">propertyKey</span>];
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">wrappedFn</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">wrappedFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// AopModule이 없거나 실패한 경우 원본 메서드 실행 (Fallback)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">originalFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Object.<span style="color:#a6e22e">defineProperty</span>(<span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>, <span style="color:#e6db74">&#39;name&#39;</span>, {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">propertyKey.toString</span>(),
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">writable</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>            Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">originalFn</span>);
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><code>descriptor</code>는 자바스크립트 런타임이 메서드 데코레이터가 실행될 때 자동으로 전달하는 표준 내장 객체입니다.
 해당 인자는 자바스크립트의 <code>Object.getOwnPropertyDescriptor()</code>과 동일합니다.</p>
 <p>DMN 공식 문서에 따르면 주어진 객체는 속성 설명자(descriptor)를 반환하고, 반환 속성은 다음과 같다고합니다. <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <ul>
@@ -490,13 +494,15 @@ https://github.com/alex-shpak/hugo-book
 </h3>
 <p>이 과정은 AutoAspectExecutor 클래스의 OnModuleInit 라이프사이클 훅에서 시작됩니다. 애플리케이션이 시작되면 모든 의존성 주입이 완료됩니다. (애플리케이션 생애주기에 단 한 번 실행됩니다.)
 이후 discoveryService 를 통해 모든 프로바이더를 조회합니다. 조회된 프로바이더는 <code>lookupLazyDecorators</code> 를 통해 @Aspect() 데코레이터와 wrap 함수가 존재하는 클래스(AOP 로직 클래스)를 찾아냅니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoAspectExecutor</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnModuleInit</span> {
+<div class="highlight" title="auto-aspect-executor.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoAspectExecutor</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnModuleInit</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">wrappedMethodCache</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WeakMap</span>();
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>(
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">discoveryService</span>: <span style="color:#66d9ef">DiscoveryService</span>,
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">metadataScanner</span>: <span style="color:#66d9ef">MetadataScanner</span>,
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">reflector</span>: <span style="color:#66d9ef">Reflector</span>,
-</span></span><span style="display:flex;"><span>    ) {}
+</span></span><span style="display:flex;"><span>    ) {
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">onModuleInit() {</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">bootstrapLazyDecorators</span>();
@@ -515,7 +521,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instanceWrappers</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">providers</span>
 </span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">concat</span>(<span style="color:#a6e22e">controllers</span>)
-</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({ <span style="color:#a6e22e">instance</span> }) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span> <span style="color:#f92672">&amp;&amp;</span> Object.<span style="color:#a6e22e">getPrototypeOf</span>(<span style="color:#a6e22e">instance</span>));
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({<span style="color:#a6e22e">instance</span>}) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span> <span style="color:#f92672">&amp;&amp;</span> Object.<span style="color:#a6e22e">getPrototypeOf</span>(<span style="color:#a6e22e">instance</span>));
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        <span style="color:#75715e">// lazyDecorator 즉, AOP 클래스를 모두 찾아(Outer Loop) 모든 프로바이더를 순회(Inner Loop)합니다.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lazyDecorator</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">lazyDecorators</span>) {
@@ -528,11 +534,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// AOP 데코레이터와 `wrap` 함수가 존재하는 클래스를 찾아 반환합니다.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// 이 구간에서 나중에 구현하게 될 cacheable.aspect.ts가 찾아집니다.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">lookupLazyDecorators</span>(<span style="color:#a6e22e">providers</span>: <span style="color:#66d9ef">InstanceWrapper</span>[])<span style="color:#f92672">:</span> <span style="color:#a6e22e">LazyDecorator</span>[] {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">reflector</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">reflector</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">providers</span>
 </span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">wrapper</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">isDependencyTreeStatic</span>())
-</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({ <span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">metatype</span> }) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({<span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">metatype</span>}) <span style="color:#f92672">=&gt;</span> {
 </span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">instance</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">metatype</span>) {
 </span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
 </span></span><span style="display:flex;"><span>                }
@@ -546,7 +552,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">instance</span>.<span style="color:#a6e22e">wrap</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span>;
 </span></span><span style="display:flex;"><span>            })
-</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">map</span>(({ <span style="color:#a6e22e">instance</span> }) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span>);
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">map</span>(({<span style="color:#a6e22e">instance</span>}) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span>);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">applyLazyDecorator</span>(<span style="color:#a6e22e">lazyDecorator</span>: <span style="color:#66d9ef">LazyDecorator</span>, <span style="color:#a6e22e">instanceWrapper</span>: <span style="color:#66d9ef">InstanceWrapper</span>&lt;<span style="color:#f92672">any</span>&gt;) {
@@ -586,12 +592,11 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 찾은 메서드는 실제 AOP 로직을 연결하기위해 wrapMethod 넘겨집니다.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aopMetadata</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">metadataList</span>) {
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">wrapMethod</span>({ <span style="color:#a6e22e">lazyDecorator</span>, <span style="color:#a6e22e">aopMetadata</span>, <span style="color:#a6e22e">methodName</span>: <span style="color:#66d9ef">propertyKey</span>, <span style="color:#a6e22e">target</span> });
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">wrapMethod</span>({<span style="color:#a6e22e">lazyDecorator</span>, <span style="color:#a6e22e">aopMetadata</span>, <span style="color:#a6e22e">methodName</span>: <span style="color:#66d9ef">propertyKey</span>, <span style="color:#a6e22e">target</span>});
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="교체">
   교체
   <a class="anchor" href="#%ea%b5%90%ec%b2%b4">#</a>
@@ -599,7 +604,7 @@ https://github.com/alex-shpak/hugo-book
 <p><code>wrapMethod</code> 는 AOP 로직(lazyDecorator.wrap)을 실행하여 AOP가 적용된 함수(wrappedMethod)를 생성합니다.
 이 함수는 WeakMap을 통해 캐시되어 성능을 최적화합니다.
 이렇게 생성된 wrappedFn은 <strong>[마킹]</strong> 단계에서 만든 프록시 함수가 참조하는 <code>aopSymbol</code> 에 연결됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">wrapMethod</span>({
+<div class="highlight" title="auto-aspect-executor.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">wrapMethod</span>({
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lazyDecorator</span>,
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">aopMetadata</span>,
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">methodName</span>,
@@ -636,23 +641,31 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>[<span style="color:#a6e22e">aopSymbol</span>] <span style="color:#f92672">??=</span> {};
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 데코레이터의 프록시 함수를 wrappedFn으로 교체합니다.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">target</span>[<span style="color:#a6e22e">aopSymbol</span>][<span style="color:#a6e22e">methodName</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrappedFn</span>;
-</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="실행">
   실행
   <a class="anchor" href="#%ec%8b%a4%ed%96%89">#</a>
 </h3>
 <p>애플리케이션 로직 어딘가에서 <code>someService.someMethod()</code> 를 실행하고, 해당 메서드에 AOP 데코레이터가 붙어있다면 <strong>[마킹]</strong> 단계에서 덮어쓴 프록시 함수가 먼저 실행됩니다.
-프록시 함수는 <code>this[aopSymbol][methodName]</code> 을 호출하며, <strong>[교체]</strong> 단계에서 wrappedFn을 연결해 두었기 때문에 AOP 로직이 실행됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#a6e22e">wrap</span>({ <span style="color:#a6e22e">method</span>, <span style="color:#a6e22e">metadata</span>: <span style="color:#66d9ef">options</span> }) {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: Before original method&#39;</span>); <span style="color:#75715e">// (&#39;before&#39; 로직)
+프록시 함수는 <code>this[aopSymbol][methodName]</code> 을 호출하며, <strong>[교체]</strong> 단계에서 wrappedFn을 연결해 두었기 때문에 AOP 클래스가 실행됩니다.</p>
+<p>아래 예제는 추후 구현하게 될 캐시 AOP 클래스의 실행 순서를 간략하게 표현한 코드입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">@Aspect</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@Injectable</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheableAspect</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">LazyDecorator</span>&lt;<span style="color:#f92672">any</span>, <span style="color:#a6e22e">CacheableOption</span>&gt; {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wrap</span>({<span style="color:#a6e22e">method</span>, <span style="color:#a6e22e">metadata</span>: <span style="color:#66d9ef">options</span>}) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: Before original method&#39;</span>); <span style="color:#75715e">// (&#39;before&#39; 로직)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// &#39;원본 함수&#39;가 &#39;스텁 함수&#39; 내부에 매핑 (Closure)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">method</span>(...<span style="color:#a6e22e">args</span>); 
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// &#39;원본 함수&#39;가 &#39;스텁 함수&#39; 내부에 매핑 (Closure)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">method</span>(...<span style="color:#a6e22e">args</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: After original method&#39;</span>); <span style="color:#75715e">// (&#39;after&#39; 로직)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
-</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: After original method&#39;</span>); <span style="color:#75715e">// (&#39;after&#39; 로직)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>간단(?)하게 내부 동작 원리를 살펴보았으니 이제 구현만 하면 되겠습니다.</p>
 <h2 id="구현하기">
@@ -734,7 +747,7 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#pain-point">Pain Point</a></li>
+    <li><a href="#페인-포인트">페인 포인트</a></li>
     <li><a href="#spring-boot-cache-참고하기">Spring Boot Cache 참고하기</a>
       <ul>
         <li><a href="#cacheable">@Cacheable</a></li>
