@@ -44,135 +44,6 @@ select {
   font-family: var(--font-noto-sans) !important;
 }
 
-/* Keep original Roboto Mono for code blocks */
-code,
-pre,
-kbd,
-samp,
-.book-code,
-.highlight {
-  font-family: 'Roboto Mono', monospace !important;
-}
-
-/* ===== Code Block Styles - MacBook Style ===== */
-
-/* Container for code blocks */
-.markdown pre {
-  position: relative;
-  margin: 1.5rem 0 !important;
-  padding: 2.5rem 1.5rem 1.25rem !important; /* Extra padding for header */
-  overflow-x: auto !important;
-  border-radius: 0.75rem;
-  background: #282c34 !important;
-  border: 1px solid #1a1d23;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
-              0 1px 8px rgba(0, 0, 0, 0.2);
-
-  /* MacBook window header */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2rem;
-    background: #21252b;
-    border-radius: 0.75rem 0.75rem 0 0;
-    border-bottom: 1px solid #181a1f;
-  }
-
-  /* MacBook traffic lights (red, yellow, green buttons) */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0.65rem;
-    left: 1rem;
-    width: 11px;
-    height: 11px;
-    background: #ff5f56;
-    border-radius: 50%;
-    box-shadow:
-      18px 0 0 #ffbd2e,
-      36px 0 0 #27c93f;
-  }
-
-  /* Enable smooth scrolling */
-  scrollbar-width: thin;
-  scrollbar-color: #4b5563 transparent;
-
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 0 0 0.75rem 0.75rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4b5563;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
-  }
-}
-
-/* Code element inside pre */
-.markdown pre code {
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  font-size: 0.875rem !important;
-  line-height: 1.6 !important;
-  white-space: pre !important;
-  word-wrap: normal !important;
-  display: block;
-  color: #abb2bf !important;
-}
-
-/* Inline code (not in pre) */
-.markdown code {
-  padding: 0.125rem 0.375rem !important;
-  background: #f6f8fa !important;
-  border: 1px solid #e1e4e8 !important;
-  border-radius: 0.25rem;
-  font-size: 0.875em !important;
-  color: #24292f;
-}
-
-/* Syntax highlighting wrapper */
-.markdown .highlight {
-  margin: 1.5rem 0 !important;
-
-  pre {
-    margin: 0 !important;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .markdown pre {
-    background: #161b22 !important;
-    border-color: #30363d;
-  }
-
-  .markdown code {
-    background: #161b22 !important;
-    border-color: #30363d !important;
-    color: #c9d1d9;
-  }
-
-  .markdown pre::-webkit-scrollbar-thumb {
-    background: #484f58;
-  }
-
-  .markdown pre::-webkit-scrollbar-thumb:hover {
-    background: #6e7681;
-  }
-}
-
 /* ===== Modern Blog Post Title Styles ===== */
 
 /* Main article titles - H1 */
@@ -362,15 +233,17 @@ samp,
   flex-direction: column;
   margin-top: 0 !important;
   margin-bottom: 2rem;
+  gap: 1rem; /* Add gap between title and date */
 }
 
 .book-page-title {
-  font-size: 2.5rem !important;
+  font-size: 2.25rem !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   margin: 0 !important;
+  margin-bottom: 0.5rem !important; /* Add space below title */
   letter-spacing: -0.02em;
-  color: var(--body-font-color);
+  color: rgba(15,23,42,var(--tw-text-opacity));
 }
 
 .book-page-meta-row {
@@ -378,6 +251,7 @@ samp,
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  margin-top: 0.5rem; /* Add space above date */
 }
 
 .book-page-reading-time {
@@ -398,7 +272,7 @@ samp,
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--gray-500);
   opacity: 0.8;
 
@@ -416,6 +290,90 @@ samp,
 
   .book-page-meta-row {
     flex-wrap: wrap;
+  }
+}
+
+/* ===== Code Block with Filename ===== */
+/* Style for code blocks with language specified */
+.markdown .highlight {
+  position: relative;
+
+  /* Display filename for code blocks with title attribute */
+  &[data-lang]::before,
+  &[title]::before {
+    content: attr(title);
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem 0.75rem;
+    color: lightgray;
+    opacity: 0.7;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: var(--font-noto-sans);
+    z-index: 1;
+  }
+
+  /* Adjust pre padding to avoid overlap with filename */
+  pre {
+    padding-top: 2rem !important;
+  }
+}
+
+/* Alternative: Using data attributes for filenames */
+div[class*="language-"] {
+  position: relative;
+
+  &[data-title]::before {
+    content: attr(data-title);
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0 0.25rem 0 0.25rem;
+    font-family: var(--font-noto-sans);
+    z-index: 1;
+  }
+
+  pre {
+    padding-top: 2rem !important;
+  }
+}
+
+/* For markdown code blocks with filename in first line comment */
+.markdown pre {
+  position: relative;
+
+  code {
+    /* Style for filename comments like // filename.ts or # filename.py */
+    span.hljs-comment:first-child {
+      &:only-of-type {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.25rem 0.75rem;
+        background: rgba(0, 0, 0, 0.06);
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-style: normal;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .markdown .highlight[data-lang]::before,
+  .markdown .highlight[title]::before,
+  div[class*="language-"][data-title]::before {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
   }
 }
 
