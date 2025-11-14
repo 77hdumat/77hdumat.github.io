@@ -10,7 +10,7 @@ readingTime: 15
 저희 서비스는 모두 MSA로 구성되어 있었고, 저는 이 서비스들을 팔로업 하는 'BFF(Backend for Frontend)' 서버를 담당하고 있습니다.
 
 MSA 환경에서 BFF 서버는 다양한 서비스의 엔드포인트에 의존하다 보니, 트래픽이 집중될 때 병목 현상이 발생하기 가장 쉬운 구간이었습니다.
-이 문제를 빠르게 해결하기 위해 (판교 사투리로 ASAP 이라고 하나요?...😅) 기존 비즈니스 로직과 복잡하게 얽혀있던 캐시 구현을 모두 걷어낸 후, 지속 가능하고 편한 캐시 관리 방안을 모색했습니다.
+이 문제를 빠르게 해결하기 위해 (ASAP ...😅) 기존 비즈니스 로직과 복잡하게 얽혀있던 캐시 구현을 모두 걷어낸 후, 지속 가능하고 편한 캐시 관리 방안을 모색했습니다.
 
 **기존 캐시 로직에는 몇 가지 문제점이 있었습니다.**
 
@@ -142,14 +142,16 @@ export const createDecorator = (
 ```
 
 `descriptor`는 자바스크립트 런타임이 메서드 데코레이터가 실행될 때 자동으로 전달하는 표준 내장 객체입니다. 
-해당 인자는 자바스크립트의 `Object.getOwnPropertyDescriptor()`과 동일합니다. 
+해당 인자는 자바스크립트의 `Object.getOwnPropertyDescriptor()`와 동일합니다. 
 
-DMN 공식 문서에 따르면 주어진 객체는 속성 설명자(descriptor)를 반환하고, 반환 속성은 다음과 같다고합니다. [^2]
+DMN 공식 문서에 따르면 주어진 객체는 속성 설명자인 `descriptor` 를 반환하고, 반환 값은 다음과 같다고 합니다. [^2]
 
-- value: 원본 메서드 (originalFn)
+- value: 원본 메서드
 - writable: 값을 덮어쓸 수 있는지 여부
 - enumerable: 열거 가능 여부
 - configurable: 속성을 삭제하거나 descriptor를 수정할 수 있는지 여부
+
+descriptor 통해 원본 메서드를 식별하여 AOP의 개념을 수행할 수 있게됩니다.
 
 ### 탐색
 탐색은 `AutoAspectExecutor` 클래스의 `OnModuleInit` 부팅 라이프사이클 훅에서 시작됩니다. 
