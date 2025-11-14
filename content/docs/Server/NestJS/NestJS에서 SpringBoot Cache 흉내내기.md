@@ -151,7 +151,7 @@ DMN 공식 문서에 따르면 주어진 객체는 속성 설명자인 `descript
 - enumerable: 열거 가능 여부
 - configurable: 속성을 삭제하거나 descriptor를 수정할 수 있는지 여부
 
-descriptor 통해 원본 메서드를 식별하여 AOP의 개념을 수행할 수 있게됩니다.
+descriptor 통해 원본 메서드를 식별하여 AOP를 적용할 수 있게 됩니다.
 
 ### 탐색
 탐색은 `AutoAspectExecutor` 클래스의 `OnModuleInit` 부팅 라이프사이클 훅에서 시작됩니다. 
