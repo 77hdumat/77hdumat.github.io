@@ -152,7 +152,7 @@ DMN 공식 문서에 따르면 주어진 객체는 속성 설명자(descriptor)�
 - configurable: 속성을 삭제하거나 descriptor를 수정할 수 있는지 여부
 
 ### 탐색
-이 과정은 AutoAspectExecutor 클래스의 OnModuleInit 라이프사이클 훅에서 시작됩니다. 애플리케이션이 시작되면 모든 의존성 주입이 완료됩니다. (애플리케이션 생애주기에 단 한 번 실행됩니다.)
+이 과정은 AutoAspectExecutor 클래스의 OnModuleInit 부팅 라이프사이클 훅에서 시작됩니다. 부팅이 완료되면 DI가 완료됩니다.
 이후 discoveryService 를 통해 모든 프로바이더를 조회합니다. 조회된 프로바이더는 `lookupLazyDecorators` 를 통해 @Aspect() 데코레이터와 wrap 함수가 존재하는 클래스(AOP 로직 클래스)를 찾아냅니다.
 
 ```typescript {title="auto-aspect-executor.ts"}
