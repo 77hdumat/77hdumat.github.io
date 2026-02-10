@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko-kr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  개요
+  #
+
+최근 큰 규모의 고객사 이전으로 서비스 전반의 부하 안정성 개선이 사내 최우선 과제로 떠올랐습니다.
+저는 여러 마이크로서비스(MSA) 사이에서 프론트엔드의 협업을 돕는 &lsquo;BFF(Backend for Frontend)&rsquo; 서버를 담당하고 있었습니다.
+흔히 BFF는 여러 서비스 엔드포인트를 팔로업하고 FE가 원하는 응답을 적절하게 &lsquo;Partial Response&rsquo; 하는 서버를 의미합니다.
+하지만 BFF는 웹사이트 트래픽이 집중될 때 각 서비스로 가해지는 트래픽을 조절해 시스템 전체의 병목을 방어하는 Offload의 핵심 계층이기도 합니다.
+이러한 책임을 갖는 서버에서 단기간에 확실한 개선 효과를 낼 수 있는 방법은 &lsquo;캐시&rsquo;라고 판단했습니다.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://77hdumat.github.io/docs/server/nestjs/nestjs-cache-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B3%A0-%EA%B3%84%EC%8B%A0%EA%B0%80%EC%9A%94/">
+  <meta property="og:site_name" content="서민규">
+  <meta property="og:title" content="NestJS 캐시 어떻게 활용하고 계신가요?">
+  <meta property="og:description" content="개요 # 최근 큰 규모의 고객사 이전으로 서비스 전반의 부하 안정성 개선이 사내 최우선 과제로 떠올랐습니다. 저는 여러 마이크로서비스(MSA) 사이에서 프론트엔드의 협업을 돕는 ‘BFF(Backend for Frontend)’ 서버를 담당하고 있었습니다.
+흔히 BFF는 여러 서비스 엔드포인트를 팔로업하고 FE가 원하는 응답을 적절하게 ‘Partial Response’ 하는 서버를 의미합니다. 하지만 BFF는 웹사이트 트래픽이 집중될 때 각 서비스로 가해지는 트래픽을 조절해 시스템 전체의 병목을 방어하는 Offload의 핵심 계층이기도 합니다.
+이러한 책임을 갖는 서버에서 단기간에 확실한 개선 효과를 낼 수 있는 방법은 ‘캐시’라고 판단했습니다.">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2025-11-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-11-02T00:00:00+00:00">
+<title>NestJS 캐시 어떻게 활용하고 계신가요? | 서민규</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://77hdumat.github.io/docs/server/nestjs/nestjs-cache-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B3%A0-%EA%B3%84%EC%8B%A0%EA%B0%80%EC%9A%94/">
+<link rel="stylesheet" href="/book.min.07600cebb36b9fb876c33f623f7bc99933c2bbd8bd3e6d03d46a19d1874c1ff6.css" integrity="sha256-B2AM67Nrn7h2wz9iP3vJmTPCu9i9Pm0D1GoZ0YdMH/Y=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.0aa5a3260ec2e23327d2a3101c20e697dbe871c282ee8b037eb0eda97405822f.js" integrity="sha256-CqWjJg7C4jMn0qMQHCDml9voccKC7osDfrDtqXQFgi8=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<style>
+  #scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #9ca3af, #d1d5db, #6b7280);
+    z-index: 9999;
+    transition: width 0.15s ease-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<div id="scroll-progress"></div>
+
+<script>
+  window.addEventListener('scroll', function() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById('scroll-progress').style.width = scrolled + '%';
+  });
+</script>
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>서민규</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <div class="book-search-wrapper">
+    <svg class="book-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    <input type="text" id="book-search-input" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  </div>
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>Server</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-dca74e9d0f3a9a8ae272d3aac646e45e" class="toggle" checked />
+    <label for="section-dca74e9d0f3a9a8ae272d3aac646e45e" class="flex">
+      <a role="button" class="flex-auto ">NestJS</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/server/nestjs/nestjs-cache-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B3%A0-%EA%B3%84%EC%8B%A0%EA%B0%80%EC%9A%94/" class="active">NestJS 캐시 어떻게 활용하고 계신가요?</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="book-menu-footer">
+    <hr>
+    <div class="contact-info">
+        <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 60 60">
+                <rect x="20" y="5" width="25" height="40" fill="#6A5ACD" opacity="0.9" rx="3"/>
+                <circle cx="40" cy="40" r="20" fill="#FF7F50" opacity="0.7"/>
+            </svg>
+            <span>2022 ~</span>
+        </div>
+        <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Seoul, Korea</span>
+        </div>
+        <a href="mailto:77hdumat@gmail.com" class="contact-item contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <span>77hdumat@gmail.com</span>
+        </a>
+        <a href="https://github.com/77hdumat" target="_blank" rel="noopener noreferrer"
+           class="contact-item contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <span>GitHub</span>
+        </a>
+    </div>
+</div>
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>NestJS 캐시 어떻게 활용하고 계신가요?</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#개요">개요</a></li>
+    <li><a href="#선언적-캐시-데코레이터-지원">선언적 캐시 데코레이터 지원</a>
+      <ul>
+        <li><a href="#마킹">마킹</a></li>
+        <li><a href="#탐색">탐색</a></li>
+        <li><a href="#교체">교체</a></li>
+        <li><a href="#실행">실행</a></li>
+        <li><a href="#option-설계하기">Option 설계하기</a></li>
+        <li><a href="#keygenerator">KeyGenerator</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown book-article">
+  <div class="book-page-header">
+    <div class="book-page-title">NestJS 캐시 어떻게 활용하고 계신가요?</div>
+    <div class="book-page-meta-row">
+      <div class="book-page-reading-time">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>20 minutes</span>
+      </div>
+      
+      <time class="book-page-date" datetime="2025-11-02">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2025.11.02
+      </time>
+      
+    </div>
+  </div>
+</article>
+
+      
+  <article class="markdown book-article"><h2 id="개요">
+  개요
+  <a class="anchor" href="#%ea%b0%9c%ec%9a%94">#</a>
+</h2>
+<p>최근 큰 규모의 고객사 이전으로 서비스 전반의 부하 안정성 개선이 사내 최우선 과제로 떠올랐습니다.
+저는 여러 마이크로서비스(MSA) 사이에서 프론트엔드의 협업을 돕는 &lsquo;BFF(Backend for Frontend)&rsquo; 서버를 담당하고 있었습니다.</p>
+<p>흔히 BFF는 여러 서비스 엔드포인트를 팔로업하고 FE가 원하는 응답을 적절하게 &lsquo;Partial Response&rsquo; 하는 서버를 의미합니다.
+하지만 BFF는 웹사이트 트래픽이 집중될 때 각 서비스로 가해지는 트래픽을 조절해 시스템 전체의 병목을 방어하는 <strong>Offload</strong>의 핵심 계층이기도 합니다.</p>
+<p>이러한 책임을 갖는 서버에서 단기간에 확실한 개선 효과를 낼 수 있는 방법은 &lsquo;캐시&rsquo;라고 판단했습니다.</p>
+<p><strong>하지만 기존 캐시에는 몇 가지 문제가 있었습니다.</strong></p>
+<ul>
+<li>캐시 로직으로 인한 비즈니스 로직 오염</li>
+<li>조건부 캐싱의 어려움</li>
+<li>캐시 무효화의 일관성 문제</li>
+<li>계층형 캐시 미지원</li>
+<li>캐시 쇄도 문제</li>
+<li>40kb 이상의 큰 문자열을 I/O 할 때 생기는 응답 지연 문제 (Redis)</li>
+</ul>
+<p>여러 문제가 있었지만 선언적 방식으로 캐싱 로직을 관리할 수 있도록 간단한 리팩토링을 먼저 진행하기로 했습니다.</p>
+<h2 id="선언적-캐시-데코레이터-지원">
+  선언적 캐시 데코레이터 지원
+  <a class="anchor" href="#%ec%84%a0%ec%96%b8%ec%a0%81-%ec%ba%90%ec%8b%9c-%eb%8d%b0%ec%bd%94%eb%a0%88%ec%9d%b4%ed%84%b0-%ec%a7%80%ec%9b%90">#</a>
+</h2>
+<p>당시 기능을 빠르게 붙여야 했던 탓에 구현에만 급급했었고&hellip; 다음과 같은 코드가 남발하고 있었습니다.</p>
+<div class="highlight" title="some.service.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">getPaymentsKey</span>(<span style="color:#66d9ef">@Ctx</span>() <span style="color:#a6e22e">user</span>: <span style="color:#66d9ef">UserContext</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">storeId</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">storeId</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cacheKey</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`get-clientKey-</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">storeId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">cacheValue</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cacheValue</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cacheService</span>.<span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">cacheKey</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">`캐시 조회 실패: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">cacheKey</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">stack</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cacheValue</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">cacheValue</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cacheValue</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">paymentsServcie</span>.<span style="color:#a6e22e">getPaymentsKey</span>(<span style="color:#a6e22e">storeId</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">state</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;ACTIVE&#39;</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cacheService</span>.<span style="color:#66d9ef">set</span>(<span style="color:#a6e22e">cacheKey</span>, {<span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span>});
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">`캐시 설정 실패: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">cacheKey</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">stack</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">GetPaymentsKeyResponse</span>(<span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>당시 NestJS 캐시 모듈은 메서드 호출을 가로채 실행 전 후로 원하는 로직을 실행 시킬 수 있는 횡단 관심사 기능(AOP)을 제가 원하는 수준으로 제공하지 않았습니다.
+(Interceptor 가 있었지만 라우터 핸들러에서만 동작했기에 적합하지 않다고 판단했습니다.)
+그렇다면 NestJS에서 선언적 캐시를 위한 데코레이터를 어떻게 구현할 수 있을까요?</p>
+<p>간단한 해결책으로 <strong><a href="https://github.com/toss/nestjs-aop">@toss/nestjs-aop</a></strong> 를 사용했습니다. <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<p><strong>nestjs-aop</strong>는 라우터 핸들러에서만 동작하는 Interceptor가 아닌 부팅 라이프 사이클(Bootstrap)을 이용해 DI 컨테이너가 초기화된 후
+AOP의 대상이 되는 메서드를 찾아 <strong>런타임에 직접 교체(Monkey-Patching)</strong> 하는 원리로 서비스 메서드를 포함한 모든 프로바이더에 AOP를 적용할 수 있게 합니다.</p>
+<p>내부 동작 원리는 크게 <strong>[마킹] → [탐색] → [교체] → [실행]</strong> 4단계로 나뉩니다.</p>
+<h3 id="마킹">
+  마킹
+  <a class="anchor" href="#%eb%a7%88%ed%82%b9">#</a>
+</h3>
+<p>metadataKey와 metadata를 인자로 받아 고유한 심볼로 데코레이터를 생성합니다. 코드를 살펴보면 다음과 같습니다.</p>
+<div class="highlight" title="create-decorator.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createDecorator</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">metadataKey</span>: <span style="color:#66d9ef">symbol</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">string</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">metadata?</span>: <span style="color:#66d9ef">unknown</span>,
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">MethodDecorator</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aopSymbol</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Symbol</span>(<span style="color:#e6db74">&#39;AOP_DECORATOR&#39;</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">applyDecorators</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 메타데이터 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        (<span style="color:#a6e22e">target</span>: <span style="color:#66d9ef">object</span>, <span style="color:#a6e22e">propertyKey</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">symbol</span>, <span style="color:#a6e22e">descriptor</span>: <span style="color:#66d9ef">PropertyDescriptor</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">AddMetadata</span>&lt;<span style="color:#f92672">symbol</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#a6e22e">string</span>, <span style="color:#a6e22e">AopMetadata</span>&gt;(<span style="color:#a6e22e">metadataKey</span>, {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">originalFn</span>: <span style="color:#66d9ef">descriptor.value</span>, <span style="color:#75715e">// 원본 메서드 저장 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">metadata</span>,                     <span style="color:#75715e">// 데코레이터 옵션 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">aopSymbol</span>,                    <span style="color:#75715e">// 식별자 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            })(<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">propertyKey</span>, <span style="color:#a6e22e">descriptor</span>);
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 원본 메서드 바꿔치기 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        (<span style="color:#a6e22e">_</span>: <span style="color:#66d9ef">object</span>, <span style="color:#a6e22e">propertyKey</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">symbol</span>, <span style="color:#a6e22e">descriptor</span>: <span style="color:#66d9ef">PropertyDescriptor</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">originalFn</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#66d9ef">this</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">any</span>, ...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">unknown</span>[]) {
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 데코레이터가 붙은 메서드가 호출되면, 런타임은 원본 함수 대신 wrappedFn 함수 실행
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrappedFn</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">aopSymbol</span>]<span style="color:#f92672">?</span>.[<span style="color:#a6e22e">propertyKey</span>];
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">wrappedFn</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">wrappedFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// AopModule이 없거나 실패한 경우 원본 메서드 실행 (Fallback)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">originalFn</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Object.<span style="color:#a6e22e">defineProperty</span>(<span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>, <span style="color:#e6db74">&#39;name&#39;</span>, {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">propertyKey.toString</span>(),
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">writable</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>            Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">descriptor</span>.<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">originalFn</span>);
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><code>applyDecorators</code>는 두 개의 데코레이터 함수를 순차적으로 적용합니다.</p>
+<h4 id="메타데이터-저장">
+  메타데이터 저장
+  <a class="anchor" href="#%eb%a9%94%ed%83%80%eb%8d%b0%ec%9d%b4%ed%84%b0-%ec%a0%80%ec%9e%a5">#</a>
+</h4>
+<p>NestJS가 실행되는(bootstrap) 과정에서 메서드에 AOP를 적용하고 런타임에 동작이 변경될 수 있도록 메타데이터를 마킹합니다.</p>
+<blockquote>
+<p><code>descriptor</code>는 자바스크립트 런타임이 메서드 데코레이터가 실행될 때 자동으로 전달하는 표준 내장 객체입니다.
+MDN 공식 문서에 따르면 반환 값은 다음과 같다고 합니다. <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<ul>
+<li>value: 원본 메서드</li>
+<li>writable: 값을 덮어쓸 수 있는지 여부</li>
+<li>enumerable: 열거 가능 여부</li>
+<li>configurable: 속성을 삭제하거나 descriptor를 수정할 수 있는지 여부</li>
+</ul>
+</blockquote>
+<p><code>descriptor.value</code>가 원본 메서드인 것을 활용해 <code>AddMetadata</code>가 메타데이터를 원본 메서드에 마킹할 수 있습니다.
+추후 NestJS의 <code>DiscoveryService</code>가 메타데이터를 스캔하면서 AOP 로직 주입 대상을 찾습니다.</p>
+<h4 id="원본-메서드-바꿔치기">
+  원본 메서드 바꿔치기
+  <a class="anchor" href="#%ec%9b%90%eb%b3%b8-%eb%a9%94%ec%84%9c%eb%93%9c-%eb%b0%94%ea%bf%94%ec%b9%98%ea%b8%b0">#</a>
+</h4>
+<p>위에서 <code>descriptor.value</code>는 원본 메서드임을 확인했습니다. 따라서 <code>descriptor.value</code>는 <code>function</code>으로 교체되는 것을 알 수 있습니다.</p>
+<p>교체는 <code>OnModuleInit</code> 단계에서 위에서 마킹한 메타데이터를 발견하면 실제 데코레이터 로직이 담긴 새로운 함수를 생성하고
+<code>instance[aopSymbol][propertyKey]</code>를 통해 <strong>원본 메서드를 바꿔치기</strong> 합니다.
+(원본 메서드가 실행되면 바꿔치기된 함수가 실행되고, 원본 함수 대신 AOP가 적용된 함수가 실행되게 됩니다.)</p>
+<p>이후 바꿔치기 과정에서 프로토타입 체인이 망가지는 것을 방지하기 위해 바꿔치기 한 함수의 이름을 원본 함수 이름으로 바꾸고 프로토타입을 원본 함수로 연결합니다.</p>
+<p>중요한 점은 아직 원본 메서드를 바꿔치기한 <code>this[aopSymbol][propertyKey]</code>은 빈 껍데기라는 점입니다.
+<strong>[교체]</strong> 단계에서 다시 살펴보도록 하겠습니다.</p>
+<h3 id="탐색">
+  탐색
+  <a class="anchor" href="#%ed%83%90%ec%83%89">#</a>
+</h3>
+<p>탐색은 <code>AutoAspectExecutor</code>의 <code>OnModuleInit</code> 훅에서 시작됩니다. 코드를 살펴보겠습니다.</p>
+<div class="highlight" title="auto-aspect-executor.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoAspectExecutor</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnModuleInit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">wrappedMethodCache</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WeakMap</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">discoveryService</span>: <span style="color:#66d9ef">DiscoveryService</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">metadataScanner</span>: <span style="color:#66d9ef">MetadataScanner</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">reflector</span>: <span style="color:#66d9ef">Reflector</span>,
+</span></span><span style="display:flex;"><span>    ) {
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">onModuleInit() {</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">bootstrapLazyDecorators</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">bootstrapLazyDecorators() {</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">controllers</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">discoveryService</span>.<span style="color:#a6e22e">getControllers</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">providers</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">discoveryService</span>.<span style="color:#a6e22e">getProviders</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lazyDecorators</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lookupLazyDecorators</span>(<span style="color:#a6e22e">providers</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">lazyDecorators</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">instanceWrappers</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">providers</span>
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">concat</span>(<span style="color:#a6e22e">controllers</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({ <span style="color:#a6e22e">instance</span> }) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span> <span style="color:#f92672">&amp;&amp;</span> Object.<span style="color:#a6e22e">getPrototypeOf</span>(<span style="color:#a6e22e">instance</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lazyDecorator</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">lazyDecorators</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrapper</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">instanceWrappers</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">applyLazyDecorator</span>(<span style="color:#a6e22e">lazyDecorator</span>, <span style="color:#a6e22e">wrapper</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// AOP 데코레이터와 `wrap` 함수가 존재하는 클래스를 찾아 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">lookupLazyDecorators</span>(<span style="color:#a6e22e">providers</span>: <span style="color:#66d9ef">InstanceWrapper</span>[])<span style="color:#f92672">:</span> <span style="color:#a6e22e">LazyDecorator</span>[] {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">reflector</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">providers</span>
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">wrapper</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">isDependencyTreeStatic</span>())
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">filter</span>(({<span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">metatype</span>}) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">instance</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">metatype</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aspect</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">reflector</span>.<span style="color:#66d9ef">get</span>&lt;<span style="color:#f92672">string</span>&gt;(<span style="color:#a6e22e">ASPECT</span>, <span style="color:#a6e22e">metatype</span>) <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">reflector</span>.<span style="color:#66d9ef">get</span>&lt;<span style="color:#f92672">string</span>&gt;(<span style="color:#a6e22e">ASPECT</span>, Object.<span style="color:#a6e22e">getPrototypeOf</span>(<span style="color:#a6e22e">instance</span>).<span style="color:#66d9ef">constructor</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">aspect</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">instance</span>.<span style="color:#a6e22e">wrap</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span>;
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">map</span>(({<span style="color:#a6e22e">instance</span>}) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">instance</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">applyLazyDecorator</span>(<span style="color:#a6e22e">lazyDecorator</span>: <span style="color:#66d9ef">LazyDecorator</span>, <span style="color:#a6e22e">instanceWrapper</span>: <span style="color:#66d9ef">InstanceWrapper</span>&lt;<span style="color:#f92672">any</span>&gt;) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">target</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">instanceWrapper</span>.<span style="color:#a6e22e">isDependencyTreeStatic</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> <span style="color:#a6e22e">instanceWrapper.instance</span>
+</span></span><span style="display:flex;"><span>            : <span style="color:#66d9ef">instanceWrapper.metatype?.prototype</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">target</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">debug</span>(<span style="color:#e6db74">&#39;[applyLazyDecorator] not found target&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">propertyKeys</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">metadataScanner</span>.<span style="color:#a6e22e">scanFromPrototype</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">target</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">instanceWrapper</span>.<span style="color:#a6e22e">isDependencyTreeStatic</span>() <span style="color:#f92672">?</span> Object.<span style="color:#a6e22e">getPrototypeOf</span>(<span style="color:#a6e22e">target</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">target</span>,
+</span></span><span style="display:flex;"><span>            (<span style="color:#a6e22e">name</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">name</span>,
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">metadataKey</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">reflector</span>.<span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">ASPECT</span>, <span style="color:#a6e22e">lazyDecorator</span>.<span style="color:#66d9ef">constructor</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">propertyKey</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">propertyKeys</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// @see: https://github.com/rbuckton/reflect-metadata/blob/9562d6395cc3901eaafaf8a6ed8bc327111853d5/Reflect.ts#L938
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">targetProperty</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">target</span>[<span style="color:#a6e22e">propertyKey</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">targetProperty</span> <span style="color:#f92672">||</span> (<span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">targetProperty</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#34;object&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">targetProperty</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#34;function&#34;</span>)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 메서드를 순회하면서 metadataKey가 적용되어있는 메서드를 찾아 AOP 메타데이터를 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">metadataList</span>: <span style="color:#66d9ef">AopMetadata</span>[] <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">reflector</span>.<span style="color:#66d9ef">get</span>&lt;<span style="color:#f92672">AopMetadata</span><span style="color:#960050;background-color:#1e0010">[]</span>&gt;(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">metadataKey</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">targetProperty</span>
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">metadataList</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 실제 AOP 로직을 연결하기위해 wrapMethod에 전달
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">aopMetadata</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">metadataList</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">wrapMethod</span>({<span style="color:#a6e22e">lazyDecorator</span>, <span style="color:#a6e22e">aopMetadata</span>, <span style="color:#a6e22e">methodName</span>: <span style="color:#66d9ef">propertyKey</span>, <span style="color:#a6e22e">target</span>});
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>애플리케이션이 시작되면 모든 의존성 주입이 완료되고 이후 <code>DiscoveryService</code>를 통해 모든 프로바이더를 조회할 수 있게 됩니다.</p>
+<p>즉 의존성 주입이 끝난 직후인 <code>OnModuleInit</code> 단계에서 <code>bootstrapLazyDecorators</code>이 실행됩니다.
+따라서 <code>lookupLazyDecorators</code>를 통해 <code>@Aspect()</code> 데코레이터와 <code>wrap</code> 함수가 존재하는 클래스를 찾아낼 수 있습니다.
+(AOP 클래스에서 <code>AOP 로직(LazyDecorator)</code>를 구현해야하는 이유입니다.)</p>
+<p>이후 <code>applyLazyDecorator</code>에 위에서 찾은 <code>LazyDecorator</code>와 <code>InstanceWrapper</code>를 전달합니다.</p>
+<p><code>metadataScanner</code>은 클래스(instanceWrapper)가 가진 함수를 배열로 반환하고 <code>reflector</code>를 통해 <code>metadataKey</code>가 적용되어있는 메서드를 찾아 AOP 메타데이터
+즉, <code>createDecorator</code>에서 마킹한 AOP 메타데이터(원본 메서드, 메타데이터 옵션, 심볼)를 반환합니다.</p>
+<p>찾은 메서드와 AOP 메타데이터는 <code>wrapMethod</code>에 함께 전달됩니다.</p>
+<h3 id="교체">
+  교체
+  <a class="anchor" href="#%ea%b5%90%ec%b2%b4">#</a>
+</h3>
+<p><code>wrapMethod</code> 는 <code>AOP 로직(LazyDecorator)</code>을 실행할 수 있는 <code>wrappedFn</code>을 만듭니다. 코드를 살펴보겠습니다.</p>
+<div class="highlight" title="auto-aspect-executor.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">wrapMethod</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lazyDecorator</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">aopMetadata</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">methodName</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>,
+</span></span><span style="display:flex;"><span>}<span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lazyDecorator</span>: <span style="color:#66d9ef">LazyDecorator</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">aopMetadata</span>: <span style="color:#66d9ef">AopMetadata</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">methodName</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>: <span style="color:#66d9ef">any</span>;
+</span></span><span style="display:flex;"><span>}) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 원본 메서드, 메타데이터 옵션, 심볼 조회
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">originalFn</span>, <span style="color:#a6e22e">metadata</span>, <span style="color:#a6e22e">aopSymbol</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">aopMetadata</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">self</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrappedFn</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#66d9ef">this</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">object</span>, ...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">unknown</span>[]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cache</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">self</span>.<span style="color:#a6e22e">wrappedMethodCache</span>.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">this</span>) <span style="color:#f92672">||</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WeakMap</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cached</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cache</span>.<span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">originalFn</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">cached</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cached</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">wrappedMethod</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">lazyDecorator</span>.<span style="color:#a6e22e">wrap</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">instance</span>: <span style="color:#66d9ef">this</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">methodName</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">method</span>: <span style="color:#66d9ef">originalFn.bind</span>(<span style="color:#66d9ef">this</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">metadata</span>,
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cache</span>.<span style="color:#66d9ef">set</span>(<span style="color:#a6e22e">originalFn</span>, <span style="color:#a6e22e">wrappedMethod</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">self</span>.<span style="color:#a6e22e">wrappedMethodCache</span>.<span style="color:#66d9ef">set</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">cache</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">wrappedMethod</span>.<span style="color:#a6e22e">apply</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 데코레이터의 프록시 함수를 wrappedFn으로 교체
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">target</span>[<span style="color:#a6e22e">aopSymbol</span>] <span style="color:#f92672">??=</span> {};
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>[<span style="color:#a6e22e">aopSymbol</span>][<span style="color:#a6e22e">methodName</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrappedFn</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>wrappedFn</code>은 <code>WeakMap</code>을 통해 캐시되어 성능을 최적화하고, AOP 로직이 구현되어 있는 <code>lazyDecorator.wrap</code>를 <code>wrappedMethod</code>에 할당합니다.
+이후 마킹 단계에서 원본 메서드에 바꿔치기 한 빈 껍데기 프록시 함수를 <code>wrappedFn</code>로 교체합니다.</p>
+<h3 id="실행">
+  실행
+  <a class="anchor" href="#%ec%8b%a4%ed%96%89">#</a>
+</h3>
+<p>애플리케이션 로직 어딘가에서 AOP 데코레이터가 붙어있는 함수가 실행되면 <strong>[마킹]</strong> 단계에서 덮어쓴 프록시 함수가 먼저 실행됩니다.
+프록시 함수는 <code>this[aopSymbol][methodName]</code>을 호출하게 되고 <strong>[교체]</strong> 단계에서 <code>wrappedFn</code>를 할당 하였으므로 AOP 로직이 실행됩니다.</p>
+<p>아래 예제는 추후 구현하게 될 캐시 AOP 클래스의 실행 순서를 간략하게 표현한 코드입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">@Aspect</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@Injectable</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheableAspect</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">LazyDecorator</span>&lt;<span style="color:#f92672">any</span>, <span style="color:#a6e22e">CacheableOption</span>&gt; {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wrap</span>({<span style="color:#a6e22e">method</span>, <span style="color:#a6e22e">metadata</span>: <span style="color:#66d9ef">options</span>}) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: Before original method&#39;</span>); <span style="color:#75715e">// (&#39;before&#39; 로직)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// &#39;원본 함수&#39;가 &#39;스텁 함수&#39; 내부에 매핑
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">method</span>(...<span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;AOP: After original method&#39;</span>); <span style="color:#75715e">// (&#39;after&#39; 로직)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>간단(?)하게 내부 동작 원리를 살펴보았으니 이제 구현만 하면 되겠습니다.</p>
+<h3 id="option-설계하기">
+  Option 설계하기
+  <a class="anchor" href="#option-%ec%84%a4%ea%b3%84%ed%95%98%ea%b8%b0">#</a>
+</h3>
+<p>Spring Boot의 캐시 어노테이션과 유사한 DX를 제공하는 NestJS의 캐시 데코레이터를 구현하고 싶었습니다.</p>
+<p>현재 프로젝트 규모에서는 캐시를 저장하고, 동작에 따라 캐시를 삭제할 수 있는 기능만 있으면 됐기에 <code>@Cacheable</code>과 <code>@CacheEvict</code> 데코레이터만 구현하기로 했습니다.</p>
+<p>먼저 캐시 데코레이터에 필요한 옵션을 설계합니다. (Spring Cache의 검증된 옵션 설계를 참고했습니다.)</p>
+<h4 id="cacheableoption">
+  CacheableOption
+  <a class="anchor" href="#cacheableoption">#</a>
+</h4>
+<p>캐시 저장을 위한 @Cacheable 데코레이터의 옵션입니다.</p>
+<div class="highlight" title="cacheable-option.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CacheableOption</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ttl</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cacheManager?</span>: <span style="color:#66d9ef">CacheManager</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name?</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> ((...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">string</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key?</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> ((...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">string</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">condition</span><span style="color:#f92672">?:</span> (...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">boolean</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">unless</span><span style="color:#f92672">?:</span> (<span style="color:#a6e22e">result</span>: <span style="color:#66d9ef">any</span>, ...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">boolean</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>ttl</strong> 캐시 만료 시간을 초 단위로 지정합니다.</li>
+<li><strong>cacheManager</strong> 캐시 프로바이더를 선택합니다.</li>
+<li><strong>name</strong> 동일한 name을 가진 캐시들을 일괄 관리할 수 있도록 캐시를 논리적으로 그룹화합니다.</li>
+<li><strong>key</strong> 캐시를 식별하는 고유 키를 생성합니다.</li>
+<li><strong>condition</strong> 메서드 실행 전 평가해 true일 때만 캐싱합니다.</li>
+<li><strong>unless</strong> 메서드 실행 후 평가해 true일 때는 결과를 캐싱하지 않습니다.</li>
+</ul>
+<h4 id="cacheevictoption">
+  CacheEvictOption
+  <a class="anchor" href="#cacheevictoption">#</a>
+</h4>
+<p>캐시 삭제를 위한 @CacheEvict 데코레이터의 옵션입니다.</p>
+<div class="highlight" title="cache-evict-option.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CacheEvictOption</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cacheManager?</span>: <span style="color:#66d9ef">CacheManager</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name?</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">string</span>[] <span style="color:#f92672">|</span> ((...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">string</span>[]);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key?</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> ((...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">string</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">condition</span><span style="color:#f92672">?:</span> (...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">boolean</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">allEntries?</span>: <span style="color:#66d9ef">boolean</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">beforeInvocation?</span>: <span style="color:#66d9ef">boolean</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong>cacheManager</strong> 캐시 프로바이더를 선택합니다.</li>
+<li><strong>name</strong> 동일한 name을 가진 캐시들을 일괄 관리할 수 있도록 캐시를 논리적으로 그룹화합니다. CacheableOption과 동일하게 동작하지만 일괄 삭제를 위해 배열도 지원합니다.</li>
+<li><strong>key</strong> 캐시를 식별하는 고유 키를 생성합니다.</li>
+<li><strong>condition</strong> 메서드 실행 전 평가해 true일 때만 캐시를 삭제합니다.</li>
+<li><strong>allEntries</strong> true로 설정하면 해당 네임스페이스의 모든 캐시를 삭제합니다. key 옵션은 무시합니다.</li>
+<li><strong>beforeInvocation</strong> 캐시 삭제 시점을 제어합니다. true 인 경우 메서드 실행 전에 캐시를 삭제합니다.</li>
+</ul>
+<p>이정도 옵션이면 사용하기 충분해보입니다. 다만 <code>CacheManager</code> 를 통해 각 캐시 프로바이더를 계층형으로 제공 할 수 있도록 옵션을 설계했는데요.</p>
+<p>이유는 다음과 같습니다.</p>
+<ul>
+<li>사내 프로젝트로 개발 중인 웹 빌더 폰트는 비용 문제로 한번 변경된 이후 항상 동일했습니다. 폰트와 같은 정적인 데이터는 레디스가 아닌 메모리에 저장한 후 응답하도록 다양한 캐시 프로바이더를 활용하고 싶었습니다.</li>
+<li>고객사 이벤트 시 수 천건의 요청이 똑같은 키로 발생하는 <code>Hot Key</code> 방어 전략으로 멀티 캐싱을 활용할 수 있습니다. 보통 스케일 아웃이 일어나도 레디스 클러스터는 1대인 경우가 많은데,
+로컬 캐시에 아주 짧은 TTL(1초)을 설정하면 레디스로 요청되는 네트워크 대역폭을 줄일 수 있습니다.</li>
+</ul>
+<p>캐시 프로바이더 구현은 밑에서 따로 다루도록 하겠습니다.</p>
+<h3 id="keygenerator">
+  KeyGenerator
+  <a class="anchor" href="#keygenerator">#</a>
+</h3>
+<div class="highlight" title="cache-key-generator.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">Injectable</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@nestjs/common&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">XXH</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;xxhashjs&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">type</span> { <span style="color:#a6e22e">CacheableOption</span>, <span style="color:#a6e22e">CacheEvictOption</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;../types&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CacheKeyContext</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span>: <span style="color:#66d9ef">any</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">methodName</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[];
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@Injectable</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheKeyGenerator</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">generateCacheableKey</span>(<span style="color:#a6e22e">option</span>: <span style="color:#66d9ef">CacheableOption</span>, <span style="color:#a6e22e">context</span>: <span style="color:#66d9ef">CacheKeyContext</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">name</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">option</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">namespace</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">?</span> <span style="color:#a6e22e">name</span>(...<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">args</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">:</span> <span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>            : <span style="color:#66d9ef">undefined</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">resolveKey</span>(<span style="color:#a6e22e">option</span>.<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">context</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">namespace</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#66d9ef">namespace</span><span style="color:#e6db74">}</span><span style="color:#e6db74">::</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">key</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">key</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">generateEvictKeys</span>(<span style="color:#a6e22e">option</span>: <span style="color:#66d9ef">CacheEvictOption</span>, <span style="color:#a6e22e">context</span>: <span style="color:#66d9ef">CacheKeyContext</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>[] {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">name</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">option</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">namespaces</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> (() <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">resolved</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">name</span>(...<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">args</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> Array.<span style="color:#a6e22e">isArray</span>(<span style="color:#a6e22e">resolved</span>) <span style="color:#f92672">?</span> <span style="color:#a6e22e">resolved</span>.<span style="color:#a6e22e">filter</span>(Boolean) <span style="color:#f92672">:</span> [<span style="color:#a6e22e">resolved</span>];
+</span></span><span style="display:flex;"><span>            })()
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">:</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">option</span>.<span style="color:#a6e22e">allEntries</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">namespaces</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">ns</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">ns</span><span style="color:#e6db74">}</span><span style="color:#e6db74">::`</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">resolveKey</span>(<span style="color:#a6e22e">option</span>.<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">context</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">namespaces</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> [<span style="color:#a6e22e">key</span>] <span style="color:#f92672">:</span> <span style="color:#a6e22e">namespaces</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">ns</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">ns</span><span style="color:#e6db74">}</span><span style="color:#e6db74">::</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">key</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">resolveKey</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">resolver</span>: <span style="color:#66d9ef">string</span> <span style="color:#f92672">|</span> ((...<span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[]) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">|</span> <span style="color:#66d9ef">undefined</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">context</span>: <span style="color:#66d9ef">CacheKeyContext</span>,
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 커스텀 키 리졸버가 있는 경우 우선 사용
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">resolver</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">resolved</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">resolver</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">resolver</span>(...<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">args</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">resolver</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">resolved</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">resolved</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 커스텀 키가 없으면 기본 키 생성
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">generateAutoKey</span>(<span style="color:#a6e22e">context</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateAutoKey</span>(<span style="color:#a6e22e">context</span>: <span style="color:#66d9ef">CacheKeyContext</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">methodName</span>, <span style="color:#a6e22e">args</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">context</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">className</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">target</span><span style="color:#f92672">?</span>.<span style="color:#66d9ef">constructor</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">prefix</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">className</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">className</span><span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">methodName</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">methodName</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 인자가 없는 경우
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">prefix</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 인자가 1개이고 원시 타입인 경우
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">arg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">isPrimitive</span>(<span style="color:#a6e22e">arg</span>)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">prefix</span><span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">arg</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 복잡한 경우 해시 사용
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">generateHashedKey</span>(<span style="color:#a6e22e">prefix</span>, <span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">isPrimitive</span>(<span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">unknown</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;string&#39;</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;number&#39;</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;boolean&#39;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">generateHashedKey</span>(<span style="color:#a6e22e">prefix</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">args</span>: <span style="color:#66d9ef">any</span>[])<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">json</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">args</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">hash</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">XXH</span>.<span style="color:#a6e22e">h32</span>(<span style="color:#a6e22e">json</span>, <span style="color:#ae81ff">0x654c6162</span>).<span style="color:#a6e22e">toString</span>(<span style="color:#ae81ff">16</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">prefix</span><span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">hash</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>KeyGenerator</code>는 데코레이터의 우선순위에 따라 다음과 같이 캐시 키를 생성합니다.</p>
+<ul>
+<li><strong>커스텀 키가 있는 경우</strong> <code>key</code> 옵션에 지정된 값을 그대로 해석해 사용</li>
+<li><strong>인자가 없는 경우</strong> <code>ClassName:methodName</code> 형태로 생성</li>
+<li><strong>원시 타입 인자가 1개인 경우</strong>: <code>ClassName:methodName:value</code> 형태로 생성</li>
+<li><strong>복잡한 인자인 경우</strong> <code>ClassName:methodName:${hash}</code> 형태로 생성</li>
+</ul>
+<p>복잡한 인자인 경우 <code>generateHashedKey</code>를 통해 해싱을 적용했습니다. 요청에 따라 파라미터를 그대로 직렬화해서 사용하면 Redis에서 권장하는 1KB 이하의 키 길이를 넘어설 수 있습니다.</p>
+<blockquote>
+<p>Very long keys are not a good idea. For instance, a key of 1024 bytes is a bad idea not only memory-wise, but also because the lookup of the key in the dataset may require several costly key-comparisons. Even when the task at hand is to match the existence of a large value, hashing it (for example with SHA1) is a better idea, especially from the perspective of memory and bandwidth.</p>
+</blockquote>
+<p>레디스 공식 문서<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>에 따르면 <code>1024 bytes</code>의 키는 메모리 사용량과 조회 시 키 비교 비용 측면에서 비효율적이니
+큰  값을 키로 사용해야 할 때는 해싱을 사용하라고 권장하고 있습니다.</p>
+<p>Redis 공식 문서에서는 <code>SHA1</code>을 예시로 들었지만, 캐시 키는 고유 식별자의 역할이 더 크므로 더 빠르고 짧은(32bit/64bit) 비 암호화 해시인 <code>XXHash</code>를 사용했습니다.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://github.com/toss/nestjs-aop">@toss/nestjs-aop</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor">MDN - Object.getOwnPropertyDescriptor()</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p><a href="https://redis.io/docs/latest/develop/using-commands/keyspace/">redis</a>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+<script src="https://utteranc.es/client.js"
+        repo="77hdumat/77hdumat.github.io"
+        issue-term="pathname"
+        label="comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<style>
+  .utterances {
+    max-width: 100%;
+  }
+</style>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#개요">개요</a></li>
+    <li><a href="#선언적-캐시-데코레이터-지원">선언적 캐시 데코레이터 지원</a>
+      <ul>
+        <li><a href="#마킹">마킹</a></li>
+        <li><a href="#탐색">탐색</a></li>
+        <li><a href="#교체">교체</a></li>
+        <li><a href="#실행">실행</a></li>
+        <li><a href="#option-설계하기">Option 설계하기</a></li>
+        <li><a href="#keygenerator">KeyGenerator</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
