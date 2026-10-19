@@ -9,8 +9,8 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="개요# 안녕하세요! 식스샵에서 웹 빌더 도메인과 BFF(Backend for Frontend) 서버를 맡고 있는 백엔드 개발자입니다. 두 서버는 하나의 NestJS 모노레포 안에서 함께 지내고 있는데요.
-웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다.
-최근 큰 규모의 고객사 이전으로 부하 안정성 개선이 사내 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.
+웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다. BFF는 여러 서비스를 하나로 묶어 주는 통합 레이어인 만큼, 뒤쪽 서비스 하나가 느려지면 같이 느려지기 쉬운데요.
+최근 큰 규모의 고객사 이전이 결정되면서, 부하 안정성 개선이 팀의 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이때 방문자에게 중요한 건 서버 구조가 아니라 화면이 얼마나 빨리 뜨는지뿐인데요. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
@@ -18,8 +18,8 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:site_name" content="서민규">
   <meta property="og:title" content="NestJS 캐시 어떻게 활용하고 계신가요?">
   <meta property="og:description" content="개요# 안녕하세요! 식스샵에서 웹 빌더 도메인과 BFF(Backend for Frontend) 서버를 맡고 있는 백엔드 개발자입니다. 두 서버는 하나의 NestJS 모노레포 안에서 함께 지내고 있는데요.
-웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다.
-최근 큰 규모의 고객사 이전으로 부하 안정성 개선이 사내 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.">
+웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다. BFF는 여러 서비스를 하나로 묶어 주는 통합 레이어인 만큼, 뒤쪽 서비스 하나가 느려지면 같이 느려지기 쉬운데요.
+최근 큰 규모의 고객사 이전이 결정되면서, 부하 안정성 개선이 팀의 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이때 방문자에게 중요한 건 서버 구조가 아니라 화면이 얼마나 빨리 뜨는지뿐인데요. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.">
   <meta property="og:locale" content="ko_kr">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -29,11 +29,11 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="NestJS 캐시 어떻게 활용하고 계신가요?">
   <meta itemprop="description" content="개요# 안녕하세요! 식스샵에서 웹 빌더 도메인과 BFF(Backend for Frontend) 서버를 맡고 있는 백엔드 개발자입니다. 두 서버는 하나의 NestJS 모노레포 안에서 함께 지내고 있는데요.
-웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다.
-최근 큰 규모의 고객사 이전으로 부하 안정성 개선이 사내 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.">
+웹사이트 서버는 판매자가 에디터로 만든 홈페이지를 응답하고, BFF 서버는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다. BFF는 여러 서비스를 하나로 묶어 주는 통합 레이어인 만큼, 뒤쪽 서비스 하나가 느려지면 같이 느려지기 쉬운데요.
+최근 큰 규모의 고객사 이전이 결정되면서, 부하 안정성 개선이 팀의 최우선 과제가 됐습니다. 이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이때 방문자에게 중요한 건 서버 구조가 아니라 화면이 얼마나 빨리 뜨는지뿐인데요. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.">
   <meta itemprop="datePublished" content="2025-11-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-11-02T00:00:00+00:00">
-  <meta itemprop="wordCount" content="6761">
+  <meta itemprop="wordCount" content="6445">
 
 <title>NestJS 캐시 어떻게 활용하고 계신가요? | 서민규</title>
 <link rel="icon" href="/favicon.png" >
@@ -43,7 +43,7 @@ https://github.com/alex-shpak/hugo-book
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.9adafa1d779b095cbc05ba802c6cc37ba312e639d0dac99eb320cb99c7f48850.js" integrity="sha256-mtr6HXebCVy8BbqALGzDe6MS5jnQ2smesyDLmcf0iFA=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.d39f236e7f6a0a9d3dbe3de4cc5cd004ad46760381d0c856810a9a7925d1056e.js" integrity="sha256-058jbn9qCp09vj3kzFzQBK1GdgOB0MhWgQqaeSXRBW4=" crossorigin="anonymous"></script>
 
 
 
@@ -302,10 +302,8 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#부하-테스트">부하 테스트</a>
       <ul>
         <li></li>
-        <li><a href="#운영하면서-알게-된-점">운영하면서 알게 된 점</a></li>
       </ul>
     </li>
-    <li><a href="#한계와-다음-과제">한계와 다음 과제</a></li>
     <li><a href="#마치며">마치며</a></li>
   </ul>
 </nav>
@@ -348,11 +346,13 @@ https://github.com/alex-shpak/hugo-book
   <article class="markdown book-article"><h2 id="개요">개요<a class="anchor" href="#%ea%b0%9c%ec%9a%94">#</a></h2>
 <p>안녕하세요! 식스샵에서 <strong>웹 빌더 도메인</strong>과 <strong>BFF(Backend for Frontend) 서버</strong>를 맡고 있는 백엔드 개발자입니다.
 두 서버는 하나의 NestJS 모노레포 안에서 함께 지내고 있는데요.</p>
-<p><strong>웹사이트 서버</strong>는 판매자가 에디터로 만든 홈페이지를 응답하고, <strong>BFF 서버</strong>는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다.</p>
-<p>최근 큰 규모의 고객사 이전으로 부하 안정성 개선이 사내 최우선 과제가 됐습니다.
-이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.</p>
+<p><strong>웹사이트 서버</strong>는 판매자가 에디터로 만든 홈페이지를 응답하고, <strong>BFF 서버</strong>는 프론트엔드와 여러 마이크로서비스 사이의 의사소통을 팔로업하고, 화면에 필요한 데이터를 적절히 응답합니다.
+BFF는 여러 서비스를 하나로 묶어 주는 통합 레이어인 만큼, 뒤쪽 서비스 하나가 느려지면 같이 느려지기 쉬운데요.</p>
+<p>최근 큰 규모의 고객사 이전이 결정되면서, 부하 안정성 개선이 팀의 최우선 과제가 됐습니다.
+이벤트가 열리면 수많은 방문자가 같은 홈페이지와 같은 상품을 동시에 엽니다. 이때 방문자에게 중요한 건 서버 구조가 아니라 <strong>화면이 얼마나 빨리 뜨는지</strong>뿐인데요. 이 트래픽을 두 서버가 앞에서 받아 내고, 뒤쪽 서비스로 가는 요청은 최대한 줄여야 했습니다.</p>
 <p>두 서버 모두 캐시는 이미 쓰고 있었지만, 필요한 곳에 그때그때 붙여 둔 수준이었습니다.
-이번에는 캐시를 부하 대응을 위한 주력 수단으로 삼기로 했는데요. 이유는 세 가지였습니다.</p>
+쿼리 개선이나 서버 증설 같은 선택지도 있었지만, 이번에는 캐시를 부하 대응의 주력 수단으로 삼기로 했는데요. 가장 짧은 시간에 가장 큰 임팩트를 낼 수 있는 지점이라고 판단했기 때문이에요.</p>
+<p>근거는 세 가지였습니다.</p>
 <ol>
 <li><strong>병목은 대부분 다른 서비스에 있었습니다.</strong> 외부 호출을 모두 모킹하면 300 TPS를 오류 없이 처리했지만, 리뷰 서비스 하나만 실제로 호출해도 p95가 9.71초까지 늘었습니다.</li>
 <li><strong>데이터가 캐시하기 좋았습니다.</strong> 홈페이지 데이터는 판매자가 저장하기 전까지 바뀌지 않고, BFF가 모으는 상품, 스토어 정보도 읽기가 압도적이었습니다.</li>
@@ -380,7 +380,7 @@ https://github.com/alex-shpak/hugo-book
           <td>선언적 데코레이터 예제, k6 부하 테스트</td>
       </tr>
   </tbody>
-</table></blockquote><p>그런데 기존 캐시 코드를 들여다보니 손볼 곳이 꽤 많았습니다.</p>
+</table></blockquote><p>그런데 &ldquo;캐시는 이미 쓰고 있으니 괜찮겠지&quot;라는 가정부터 다시 들여다보니, 손볼 곳이 꽤 많았습니다.</p>
 <ol>
 <li>캐시 로직이 비즈니스 로직을 오염</li>
 <li>조건부 캐싱의 어려움</li>
@@ -420,7 +420,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">GetPaymentsKeyResponse</span>(<span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span>);
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>캐시 조회, 원본 호출, 조건부 저장, 예외 처리가 비즈니스 로직과 뒤섞여 있습니다. 30줄 가까운 코드 중 정작 중요한 건 가운데 한 줄뿐이죠.</p>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>캐시 조회, 원본 호출, 조건부 저장, 예외 처리가 비즈니스 로직과 뒤섞여 있습니다. 30줄 가까운 코드 중 정작 중요한 건 가운데 한 줄뿐입니다.</p>
 <p>이런 코드를 걷어 내려면 메서드 호출을 가로채 앞뒤에 로직을 끼워 넣는 AOP가 필요합니다.
 NestJS에도 Interceptor가 있지만 컨트롤러 핸들러에만 걸리기 때문에, 서비스 메서드에 캐시를 붙이기엔 맞지 않았습니다.</p>
 <p>그래서 <strong><a href="https://github.com/toss/nestjs-aop">@toss/nestjs-aop</a></strong> 를 사용했습니다. <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
@@ -786,7 +786,7 @@ Aspect는 nestjs-aop와 연결하는 얇은 어댑터로만 두고, 캐시 로�
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">paymentsService</span>.<span style="color:#a6e22e">getPaymentsKey</span>(<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">storeId</span>);
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">GetPaymentsKeyResponse</span>(<span style="color:#a6e22e">clientKey</span>, <span style="color:#a6e22e">state</span>);
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>캐시 키 조립, 조회 실패 처리, 저장 실패 처리, 조건부 저장이 모두 데코레이터 뒤로 사라졌습니다.
-메서드 본문에는 비즈니스 로직만 남았습니다. 훨씬 읽기 편해졌죠?</p>
+메서드 본문에는 비즈니스 로직만 남았습니다. 훨씬 읽기 편해졌습니다.</p>
 <h2 id="조건부-캐싱">조건부 캐싱<a class="anchor" href="#%ec%a1%b0%ea%b1%b4%eb%b6%80-%ec%ba%90%ec%8b%b1">#</a></h2>
 <p>두 번째 문제는 조건부 캐싱이었습니다. 위 예제의 <code>state === 'ACTIVE'</code>처럼 결과에 따라 저장 여부가 달라지는 경우가 종종 있습니다.
 이 문제는 평가 시점을 분리한 두 옵션 <code>condition</code>과 <code>unless</code>로 해결했습니다.</p>
@@ -1020,7 +1020,7 @@ Redis는 명령을 단일 스레드로 처리하기 때문에, 전체 키를 한
 <p>SWR은 이름 그대로 <strong>오래된(stale) 값을 내주는 동안(while) 뒤에서 다시 검증(revalidate)한다</strong>는 캐싱 패턴입니다.
 원래는 HTTP <code>Cache-Control</code>의 <code>stale-while-revalidate</code> 지시어(RFC 5861)로 정의된 개념인데요. <sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup>
 브라우저와 CDN이 쓰던 이 패턴을 애플리케이션 캐시 계층으로 가져왔습니다.</p>
-<p>다만 패턴은 데이터와 맞아야 의미가 있습니다. stale 값을 내줘도 괜찮은 데이터여야 하니까요.
+<p>다만 패턴은 데이터와 맞아야 의미가 있습니다. stale 값을 내줘도 괜찮은 데이터여야 하기 때문입니다.
 다행히 웹사이트 서버가 내려 주는 홈페이지 데이터는 SWR과 잘 맞았습니다.</p>
 <ul>
 <li><strong>잘 바뀌지 않습니다.</strong> 판매자가 에디터에서 저장할 때만 바뀌고, 나머지는 전부 읽기입니다.</li>
@@ -1033,7 +1033,7 @@ Redis는 명령을 단일 스레드로 처리하기 때문에, 전체 키를 한
 <li><strong>짧게 잡으면 잘 바뀌지도 않는 큰 데이터를 자주 다시 만들게 됩니다.</strong> 만료될 때마다 방문자는 느린 응답을 받고, 인기 있는 상점이라면 만료 순간 요청이 한꺼번에 원본으로 몰립니다.</li>
 <li><strong>길게 잡거나 아예 없애기도 어렵습니다.</strong> 판매자가 에디터에서 수정한 내용을 저장할 때 캐시를 지우긴 하지만 모종의 이유로 실패할 수 있습니다. 이때 TTL이 없으면 바뀌기 전 화면이 계속 응답됩니다. TTL은 삭제를 놓쳐도 언젠가는 새 데이터로 바뀌게 해 주는 안전망입니다.</li>
 </ul>
-<p>SWR 패턴을 쓰면 이 고민이 사라집니다. TTL이 지나도 일단 가진 값으로 응답하고, 갱신은 뒤에서 하니까요.
+<p>SWR 패턴을 쓰면 이 고민이 사라집니다. TTL이 지나도 일단 가진 값으로 응답하고, 갱신은 뒤에서 하기 때문입니다.
 덕분에 역할을 깔끔하게 나눌 수 있었습니다.</p>
 <ul>
 <li><strong>변경 반영은</strong> 데이터가 바뀌는 시점의 <code>@CacheEvict</code>가 책임집니다.</li>
@@ -1448,128 +1448,10 @@ Node.js는 작은 Buffer를 큰 메모리 풀에서 잘라 쓰기 때문에, 뷰
 <p>33개 시나리오가 모두 통과했습니다. :)</p>
 <p><img src="/images/nestjs-cache/e2e-pass.png" alt="e2e 테스트 33개 통과 결과" /></p>
 <h2 id="부하-테스트">부하 테스트<a class="anchor" href="#%eb%b6%80%ed%95%98-%ed%85%8c%ec%8a%a4%ed%8a%b8">#</a></h2>
-<p>사실 이 모든 작업은 부하 테스트에서 시작됐습니다. 캐시를 붙이기 전, BFF가 어디까지 버티는지 <a href="https://grafana.com/docs/k6/latest/">k6</a>로 먼저 재 봤거든요.</p>
-<h4 id="기준-잡기">기준 잡기<a class="anchor" href="#%ea%b8%b0%ec%a4%80-%ec%9e%a1%ea%b8%b0">#</a></h4>
-<p>막연히 <strong>많이</strong> 넣어 보는 건 의미가 없었습니다. 그래서 이전해 오는 고객사의 지난 이벤트 데이터부터 뜯어봤는데요.
-이벤트 당일 피크는 1초에 방문자 22명, 1분에 방문자 490명, 주문 743건이었습니다.</p>
-<p>데이터를 보다 보니 재미있는 점이 있었습니다.
-방문자가 오픈 시각을 향해 서서히 늘어날 줄 알았는데, 실제로는 10분 전과 5분 전에 계단처럼 한 번씩 뛰었습니다.
-주문은 오픈 직후 2분 안에 몰렸습니다.</p>
-<p>이를 바탕으로 가상 사용자의 동선을 짰습니다.</p>
-<ol>
-<li>스토어 홈 접속</li>
-<li>상품 상세 페이지로 바로 진입</li>
-<li>재입고 시점까지 새로고침 3번</li>
-<li>바로 구매</li>
-</ol>
-<p>3번은 일부러 넣은 단계인데요.
-물량을 조금만 풀고 0시 0분 0초 오픈을 거는 고객사가 실제로 있어서, 같은 상세 페이지를 짧은 간격으로 계속 두드리는 상황을 꼭 재현하고 싶었습니다.</p>
-<p>하나 더 고려할 게 있었습니다. BFF는 여러 스토어가 같이 쓰는 멀티테넌트 서버라는 점입니다.
-이벤트 스토어만 두드리면 현실과 다르기 때문에, 다른 스토어에서도 테스트 내내 초당 10명이 들어오게 해서 백그라운드 트래픽을 깔았습니다. 이쪽은 새로고침만 뺀 같은 동선입니다.</p>
-<h4 id="1차-실제-이벤트-모양-그대로">1차: 실제 이벤트 모양 그대로<a class="anchor" href="#1%ec%b0%a8-%ec%8b%a4%ec%a0%9c-%ec%9d%b4%eb%b2%a4%ed%8a%b8-%eb%aa%a8%ec%96%91-%ea%b7%b8%eb%8c%80%eb%a1%9c">#</a></h4>
-<p>처음에는 로컬에 서버를 띄우고, 지난 이벤트의 계단 모양을 그대로 옮겨 16분짜리 시나리오를 만들었습니다.</p>
-<table>
-  <thead>
-      <tr>
-          <th>구간</th>
-          <th>시간</th>
-          <th>초당 유입</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>평시</td>
-          <td>2분</td>
-          <td>1명</td>
-      </tr>
-      <tr>
-          <td>10분 전</td>
-          <td>2분</td>
-          <td>3명</td>
-      </tr>
-      <tr>
-          <td>5분 전</td>
-          <td>2분</td>
-          <td>6명</td>
-      </tr>
-      <tr>
-          <td>오픈 직전</td>
-          <td>3분</td>
-          <td>8명</td>
-      </tr>
-      <tr>
-          <td>피크</td>
-          <td>2분</td>
-          <td>35명 / 40명</td>
-      </tr>
-      <tr>
-          <td>피크 이후</td>
-          <td>3분</td>
-          <td>10명</td>
-      </tr>
-      <tr>
-          <td>꼬리</td>
-          <td>끝까지</td>
-          <td>3명</td>
-      </tr>
-  </tbody>
-</table>
-<p>피크는 실제(초당 22명)보다 넉넉하게 35명, 40명으로 두 번 돌렸습니다.</p>
-<table>
-  <thead>
-      <tr>
-          <th>피크 유입</th>
-          <th>요청 수</th>
-          <th>TPS</th>
-          <th>평균</th>
-          <th>p95</th>
-          <th>최대</th>
-          <th>실패</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>초당 35명</td>
-          <td>123,174</td>
-          <td>128</td>
-          <td>68.64ms</td>
-          <td>177.1ms</td>
-          <td>3.95s</td>
-          <td>0%</td>
-      </tr>
-      <tr>
-          <td>초당 40명</td>
-          <td>131,861</td>
-          <td>137</td>
-          <td>46.46ms</td>
-          <td>121.78ms</td>
-          <td>1.21s</td>
-          <td>0%</td>
-      </tr>
-  </tbody>
-</table>
-<p>둘 다 실패 없이 끝났습니다.
-35명일 때가 오히려 최대 응답이 길게 나왔는데요. 로컬에서 돌린 테스트라 그 정도 편차는 감안했습니다.</p>
-<h4 id="2차-한계-찾기">2차: 한계 찾기<a class="anchor" href="#2%ec%b0%a8-%ed%95%9c%ea%b3%84-%ec%b0%be%ea%b8%b0">#</a></h4>
-<p>이번에는 로컬에서 Docker로 운영 파드 환경을 흉내 냈습니다. 컨테이너 리소스를 운영 파드와 똑같이(CPU 1코어, 메모리 1GB) 제한하고, 가상 사용자(VU)를 150명까지 밀어 넣었는데요.
-BFF 자체의 체력만 보려고 외부 HTTP 호출은 전부 모킹했습니다.</p>
-<p>먼저 VU를 10에서 150까지 7분 동안 천천히 올리고, 8분을 버티게 했습니다.</p>
-<p><img src="/images/nestjs-cache/k6-ramp.png" alt="VU 150 점진 증가 k6 결과" /></p>
-<blockquote class='book-hint '>
-<p>결과 화면의 <code>vus_max</code>가 160인 건 시나리오 두 개를 합친 값이라서입니다. 이벤트 스토어 시나리오(<code>load_test</code>) 150명에 다른 스토어 트래픽(<code>background_traffic</code>) 10명이 더해졌습니다. 아래 스파이크 결과의 <code>max=160</code>도 마찬가지입니다.</p></blockquote><p>15분 동안 316,516개 요청을 초당 350개꼴로 처리했고, 실패는 0건이었습니다. p95도 197ms로 준수했는데요.
-CPU 그래프를 같이 놓고 보면 이야기가 조금 달라집니다.</p>
-<p><img src="/images/nestjs-cache/k6-ramp-cpu.png" alt="점진 증가 테스트 중 BFF CPU" /></p>
-<p>부하가 올라온 뒤로 CPU가 80~100%에 붙어서 내려오지 않습니다. 1코어를 거의 다 쓰고 있었다는 뜻입니다.</p>
-<p>이어서 VU를 5에서 150으로 한 번에 올리는 스파이크를 걸어 봤습니다.</p>
-<p><img src="/images/nestjs-cache/k6-spike.png" alt="VU 150 스파이크 k6 결과" /></p>
-<p>한 번에 몰아넣었는데도 초당 300개 요청을 실패 없이 받아 냈고, p95는 178.71ms로 점진 증가 때(197ms)보다 오히려 조금 낮았습니다.
-다만 CPU는 이번에도 100%까지 올라갔는데요. 외부 호출을 전부 모킹한 상태에서도 이 정도라면, 컨테이너 한 대로 버틸 수 있는 건 동시 사용자 150명 언저리라고 판단했습니다.</p>
-<h4 id="3차-뒤쪽-서비스-하나만-진짜로">3차: 뒤쪽 서비스 하나만 진짜로<a class="anchor" href="#3%ec%b0%a8-%eb%92%a4%ec%aa%bd-%ec%84%9c%eb%b9%84%ec%8a%a4-%ed%95%98%eb%82%98%eb%a7%8c-%ec%a7%84%ec%a7%9c%eb%a1%9c">#</a></h4>
-<p>여기까지는 BFF 혼자 일한 결과라, 실제 운영과는 거리가 있었는데요.
-모킹을 한꺼번에 걷어 내면 느려졌을 때 원인을 알기 어려워서, 하나씩 실제 호출로 돌려 보기로 했습니다.
-첫 번째로 고른 건 상품 상세에서 부르는 리뷰 서비스입니다. 커머스는 그대로 모킹해 두고, 스파이크 시나리오도 2차와 똑같이 돌렸습니다.</p>
-<p><img src="/images/nestjs-cache/k6-review.png" alt="리뷰 서비스 실제 호출 시 k6 결과" /></p>
-<p>결과는 꽤 충격적이었습니다.</p>
+<p>사실 이 모든 작업은 부하 테스트에서 시작됐습니다.
+캐시를 붙이기 전, 이전해 오는 고객사의 지난 이벤트 데이터(피크 때 1초에 방문자 22명)를 바탕으로 시나리오를 짜고, BFF가 어디까지 버티는지 <a href="https://grafana.com/docs/k6/latest/">k6</a>로 먼저 재 봤습니다.</p>
+<p>로컬 Docker에서 운영과 같은 리소스(CPU 1코어, 메모리 1GB)로 맞춘 BFF는, 외부 호출을 모두 모킹하자 VU 150명 스파이크에도 300 TPS를 실패 없이 받아 냈습니다.
+그런데 리뷰 서비스 하나만 실제로 호출하게 바꾸자 결과가 완전히 달라졌습니다.</p>
 <table>
   <thead>
       <tr>
@@ -1577,7 +1459,6 @@ CPU 그래프를 같이 놓고 보면 이야기가 조금 달라집니다.</p>
           <th>TPS</th>
           <th>평균</th>
           <th>p95</th>
-          <th>최대</th>
           <th>실패</th>
       </tr>
   </thead>
@@ -1587,7 +1468,6 @@ CPU 그래프를 같이 놓고 보면 이야기가 조금 달라집니다.</p>
           <td>300</td>
           <td>75.04ms</td>
           <td>178.71ms</td>
-          <td>683ms</td>
           <td>0%</td>
       </tr>
       <tr>
@@ -1595,57 +1475,147 @@ CPU 그래프를 같이 놓고 보면 이야기가 조금 달라집니다.</p>
           <td>238</td>
           <td>3.36s</td>
           <td>9.71s</td>
-          <td>23.53s</td>
           <td>0.18%</td>
       </tr>
   </tbody>
 </table>
-<p>평균 응답이 3초를 넘었고, p95는 9.71초까지 늘었습니다.
-실패한 421건은 전부 체크아웃 갱신 단계에서 나왔는데, 모두 k6 클라이언트 기본 타임아웃인 10초를 넘긴 요청이었습니다.</p>
-<p>제가 더 눈여겨본 숫자는 <code>dropped_iterations</code> 78,412건입니다.
-k6는 초당 150번씩 새 사용자를 시작하려고 했는데요. 앞선 요청들이 응답을 못 받고 붙잡혀 있으니 VU가 최대 1,010명까지 불어났고, 그래도 모자랐습니다.
-응답이 느려지면 동시에 떠 있는 요청이 쌓이고, 쌓인 요청이 다시 BFF를 더 바쁘게 만드는 악순환입니다.</p>
-<p>양쪽 컨테이너 지표를 나란히 놓고 보면 더 분명해집니다.</p>
-<p><img src="/images/nestjs-cache/k6-review-bff.png" alt="리뷰 실제 호출 시 BFF CPU와 메모리" /></p>
-<p><img src="/images/nestjs-cache/k6-review-pod.png" alt="리뷰 실제 호출 시 리뷰 서비스 컨테이너 지표" /></p>
-<p>BFF는 CPU가 100%를 오르내렸고, 메모리도 190MB에서 380MB로 두 배가 됐습니다.
-그런데 정작 리뷰 서비스 컨테이너는 CPU가 15%도 안 됐습니다.</p>
-<p>왜 이런 차이가 났을까요? 리뷰 쪽 CPU가 낮다는 게 힌트였습니다.
-리뷰 서비스는 바빠서 늦은 게 아니라 느린 쿼리에 묶여 있었고 (이 쿼리는 나중에 따로 고쳤습니다), BFF는 그 응답을 기다리는 요청을 계속 껴안고 있었던 겁니다.</p>
-<p>커머스 모킹까지 걷어 보면 상황은 더 나빴습니다.
-TCP 연결, TLS 핸드셰이크, 타임아웃 오류가 쏟아져서 의미 있는 숫자를 뽑기 어려울 정도였거든요.</p>
-<h4 id="테스트-로그에서-건진-것들">테스트 로그에서 건진 것들<a class="anchor" href="#%ed%85%8c%ec%8a%a4%ed%8a%b8-%eb%a1%9c%ea%b7%b8%ec%97%90%ec%84%9c-%ea%b1%b4%ec%a7%84-%ea%b2%83%eb%93%a4">#</a></h4>
-<p>사실 숫자보다 테스트 중에 터진 로그에서 배운 게 더 많았습니다. 당시 노션에 적어 둔 것들을 옮겨 보면 이렇습니다.</p>
-<ul>
-<li>요청마다 어느 스토어인지 확인하려고 DB를 조회하고 있었습니다. 세게 몰아붙였을 때 MongoDB 커넥션 풀이 모자란다는 로그가 한 번 찍혔습니다.</li>
-<li>커머스 호출 타임아웃이 60초였습니다. 딱히 근거가 있던 값은 아니었는데요. 느린 응답 100개가 겹치면 6,000초의 대기가 그대로 쌓이는 셈입니다.</li>
-<li>캐시를 시험 삼아 붙였을 때 Redis 클라이언트에서 <code>MaxRetriesPerRequestError</code>가 났습니다.</li>
-<li>임계치를 넘기면 <code>Connection reset by peer</code>로 연결이 끊겼고, 컨테이너가 죽는 순간 처리 중이던 요청도 같이 날아갔습니다.</li>
-</ul>
-<p>정리하면, BFF가 호출하는 다른 서비스의 영향을 그대로 받고 있었습니다. 다른 서비스 하나가 느려지면 그 응답을 기다리는 요청이 BFF에 쌓이고, 결국 BFF 전체가 함께 느려지는 구조입니다.</p>
+<p><img src="/images/nestjs-cache/k6-review.png" alt="리뷰 서비스 실제 호출 시 k6 결과" /></p>
+<p>정작 리뷰 서비스는 CPU가 15%도 안 됐는데요. 바빠서 늦은 게 아니라 느린 쿼리에 묶여 있었고, BFF는 그 응답을 기다리는 요청을 껴안은 채 CPU 100%, 메모리 두 배까지 치솟았습니다.
+커머스 호출 타임아웃이 별다른 근거 없이 60초로 잡혀 있었다는 것도 이때 알게 됐습니다.</p>
+<p>BFF 자체가 느린 게 아니라, BFF가 호출하는 다른 서비스의 영향을 그대로 받고 있었던 것입니다.</p>
+<h4 id="다른-서비스가-느려도-bff는-버티자">다른 서비스가 느려도 BFF는 버티자<a class="anchor" href="#%eb%8b%a4%eb%a5%b8-%ec%84%9c%eb%b9%84%ec%8a%a4%ea%b0%80-%eb%8a%90%eb%a0%a4%eb%8f%84-bff%eb%8a%94-%eb%b2%84%ed%8b%b0%ec%9e%90">#</a></h4>
+<p>목표는 두 가지였습니다.
+하나는 다른 서비스를 감당할 수 있는 만큼만 호출하는 것, 다른 하나는 다른 서비스가 느려도 방문자의 응답은 빠르게 유지하는 것입니다.</p>
+<h4 id="방파제로-세우기">방파제로 세우기<a class="anchor" href="#%eb%b0%a9%ed%8c%8c%ec%a0%9c%eb%a1%9c-%ec%84%b8%ec%9a%b0%ea%b8%b0">#</a></h4>
+<p>앞에서 캐시에 분산 락과 SWR까지 붙인 이유가 바로 이 결과였는데요.
+캐시만 덩그러니 붙여 두면, 캐시에 값이 없는 순간 150명의 요청이 한꺼번에 원본으로 향하는 일이 되풀이되기 때문입니다. 그래서 <a href="#%ec%ba%90%ec%8b%9c-%ec%87%84%eb%8f%84-%eb%a7%89%ea%b8%b0">캐시 쇄도 막기</a>에서 본 것처럼 같은 키에는 원본을 한 번만 부르도록 만들었습니다.</p>
+<p>캐시를 붙인 뒤의 효과도 숫자로 확인하고 싶었는데요. 운영과 같은 조건을 다시 만들기는 어려워서, 공개해 둔 nestjs-cachex로 이 상황을 <strong>로컬에 재현해</strong> 전후를 비교했습니다.</p>
+<p>실제 리뷰 서비스 대신, 위처럼 느린 쿼리에 묶인 원본 서버를 직접 만들었습니다.
+DB 커넥션은 10개, 쿼리 하나에 200ms가 걸려서 1초에 최대 50건까지만 처리할 수 있습니다. 넘치는 요청은 커넥션이 빌 때까지 줄을 섭니다.
+응답은 리뷰 70개가 담긴 약 40KB짜리 JSON입니다.</p>
+<p>BFF에 엔드포인트를 두 개 만들었습니다. 원본을 매번 호출하는 쪽과, 여기에 <code>@Cacheable</code> 한 줄만 더한 쪽입니다.</p>
+<div class="highlight" title="review.controller.ts"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">@Get</span>(<span style="color:#e6db74">&#39;/nocache/products/:id/reviews&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">noCache</span>(<span style="color:#66d9ef">@Param</span>(<span style="color:#e6db74">&#39;id&#39;</span>) <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetchReviews</span>(<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@Cacheable</span>({ <span style="color:#a6e22e">ttl</span>: <span style="color:#66d9ef">10</span>, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;reviews&#39;</span>, <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">id</span> })
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@Get</span>(<span style="color:#e6db74">&#39;/cache/products/:id/reviews&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">cached</span>(<span style="color:#66d9ef">@Param</span>(<span style="color:#e6db74">&#39;id&#39;</span>) <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetchReviews</span>(<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>k6 시나리오는 앞의 테스트와 같은 스파이크로 맞췄습니다. VU를 5명에서 150명으로 10초 만에 올리고, 1분 동안 유지했습니다.
+상품은 50개 중에서 무작위로 고르고, 사용자는 요청 사이에 0.5초씩 쉽니다.
+TTL을 10초로 짧게 잡아서 테스트 도중에도 SWR 갱신이 계속 일어나게 했습니다.</p>
 <blockquote class='book-hint '>
-<p>동시 요청이 아무리 많아도 커머스는 최대한 호출하지 않도록 게이트웨이에서 최적화할 수 있는 방안 모색 필요</p></blockquote><p>앞에서 캐시에 분산 락과 SWR까지 붙인 이유가 바로 이 결과였는데요.
-캐시만 덩그러니 붙여 두면, 캐시에 값이 없는 순간 150명의 요청이 한꺼번에 원본으로 향하는 일이 되풀이되니까요. 그래서 <a href="#%ec%ba%90%ec%8b%9c-%ec%87%84%eb%8f%84-%eb%a7%89%ea%b8%b0">캐시 쇄도 막기</a>에서 본 것처럼 같은 키에는 원본을 한 번만 부르도록 만들었습니다.</p>
-<h3 id="운영하면서-알게-된-점">운영하면서 알게 된 점<a class="anchor" href="#%ec%9a%b4%ec%98%81%ed%95%98%eb%a9%b4%ec%84%9c-%ec%95%8c%ea%b2%8c-%eb%90%9c-%ec%a0%90">#</a></h3>
+<p>테스트 환경은 로컬 MacBook(M1 Pro)과 로컬 Redis입니다. 운영 환경과 절대 수치는 다를 수 있으니, 전후의 차이에 집중해서 봐 주세요.</p></blockquote><h4 id="tps는-5배-응답은-500배-빨라지고-원본-호출은-90-줄었습니다">TPS는 5배, 응답은 500배 빨라지고 원본 호출은 90% 줄었습니다<a class="anchor" href="#tps%eb%8a%94-5%eb%b0%b0-%ec%9d%91%eb%8b%b5%ec%9d%80-500%eb%b0%b0-%eb%b9%a8%eb%9d%bc%ec%a7%80%ea%b3%a0-%ec%9b%90%eb%b3%b8-%ed%98%b8%ec%b6%9c%ec%9d%80-90-%ec%a4%84%ec%97%88%ec%8a%b5%eb%8b%88%eb%8b%a4">#</a></h4>
+<p>먼저 캐시를 붙이기 전입니다.</p>
+<p><img src="/images/nestjs-cache/bench-k6-before.png" alt="캐시 적용 전 k6 결과" /></p>
+<p>1초에 48건밖에 처리하지 못했습니다. 원본의 처리 한계(초당 50건)에 그대로 묶인 숫자인데요.
+150명이 몰리자 요청이 원본 앞에 줄을 서면서 p95가 2.54초까지 늘어났습니다.</p>
+<p>같은 시나리오에 <code>@Cacheable</code> 한 줄을 더하면 이렇게 바뀝니다.</p>
+<p><img src="/images/nestjs-cache/bench-k6-after.png" alt="캐시 적용 후 k6 결과" /></p>
+<table>
+  <thead>
+      <tr>
+          <th>지표</th>
+          <th>캐시 적용 전</th>
+          <th>캐시 적용 후</th>
+          <th>변화</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TPS</td>
+          <td>48</td>
+          <td>262</td>
+          <td>5.4배</td>
+      </tr>
+      <tr>
+          <td>평균 응답</td>
+          <td>2.25s</td>
+          <td>2.63ms</td>
+          <td>약 850배 빠름</td>
+      </tr>
+      <tr>
+          <td>p95</td>
+          <td>2.54s</td>
+          <td>4.72ms</td>
+          <td>약 540배 빠름</td>
+      </tr>
+      <tr>
+          <td>처리한 요청</td>
+          <td>3,875건</td>
+          <td>20,999건</td>
+          <td>5.4배</td>
+      </tr>
+      <tr>
+          <td>원본 호출</td>
+          <td>3,875회</td>
+          <td>400회</td>
+          <td>90% 감소</td>
+      </tr>
+      <tr>
+          <td>실패</td>
+          <td>0%</td>
+          <td>0%</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>요청은 5배 넘게 더 처리했는데, 원본은 오히려 10분의 1만 불렸습니다.
+요청 100건 중 원본까지 간 건 2건뿐입니다.</p>
+<p>이번 실험에서 가장 보여 드리고 싶었던 건 <strong>원본 쪽 그래프</strong>입니다.</p>
+<p><img src="/images/nestjs-cache/bench-origin.png" alt="캐시 적용 전후 리뷰 서비스가 받은 부하" /></p>
+<p>캐시가 없을 때(빨간 선)는 원본이 테스트 내내 처리 한계인 초당 50건에 붙어 있었고, 커넥션을 기다리는 쿼리가 최대 119개까지 쌓였습니다.
+캐시를 붙이고 난 후(파란 선) 원본은 대부분의 시간 동안 쉬고 있습니다. 10초마다 작은 봉우리가 솟는 건 TTL이 지난 키를 SWR이 백그라운드에서 갱신하는 순간입니다.
+그마저도 같은 키는 락 덕분에 한 번만 호출되니, 봉우리는 최대 초당 22건에 그쳤고 대기 쿼리는 한 번도 생기지 않았습니다.</p>
+<p>BFF가 빨라진 것만큼이나, <strong>뒤쪽 서비스가 우리 트래픽에서 벗어났다는 점이 이번 작업의 핵심입니다.</strong>
+우리 서버가 방파제 역할을 하면서, 다른 서비스가 느려도 우리 방문자는 기다리지 않고, 우리 트래픽이 다른 서비스로 번지지도 않게 막았습니다.</p>
+<h5 id="압축은-얼마나-줄였을까">압축은 얼마나 줄였을까<a class="anchor" href="#%ec%95%95%ec%b6%95%ec%9d%80-%ec%96%bc%eb%a7%88%eb%82%98-%ec%a4%84%ec%98%80%ec%9d%84%ea%b9%8c">#</a></h5>
+<p>압축도 같은 방식으로 재 봤습니다.</p>
+<p>같은 40KB 리뷰 데이터를 JSON 문자열과 msgpack + zstd로 각각 저장하고, 동시 50개씩 5,000번 읽어 봤습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>지표</th>
+          <th>JSON</th>
+          <th>msgpack + zstd</th>
+          <th>변화</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Redis에 저장된 크기</td>
+          <td>40,698B</td>
+          <td>13,454B</td>
+          <td>67% 감소</td>
+      </tr>
+      <tr>
+          <td>5,000번 읽는 동안 Redis가 내보낸 데이터</td>
+          <td>194.1MB</td>
+          <td>64.2MB</td>
+          <td>67% 감소</td>
+      </tr>
+      <tr>
+          <td>조회 + 역직렬화 평균</td>
+          <td>9.66ms</td>
+          <td>10.05ms</td>
+          <td>비슷함</td>
+      </tr>
+  </tbody>
+</table>
+<p>크기와 Redis가 내보내는 데이터는 3분의 1로 줄었습니다.
+반면 조회 시간은 거의 같았는데요. 로컬 Redis는 네트워크를 타지 않아서, 줄어든 바이트만큼의 이득이 압축을 푸는 비용에 상쇄됐습니다.
+서버와 Redis 사이에 실제 네트워크가 있는 운영 환경에서는 줄어든 바이트가 그대로 전송 시간과 Redis 점유 시간의 이득으로 돌아옵니다.</p>
+<h5 id="운영에서-확인한-것">운영에서 확인한 것<a class="anchor" href="#%ec%9a%b4%ec%98%81%ec%97%90%ec%84%9c-%ed%99%95%ec%9d%b8%ed%95%9c-%ea%b2%83">#</a></h5>
 <ul>
-<li>값 압축을 적용한 뒤 Redis에 저장되는 크기가 절반 정도로 줄었고, 조회 지연은 2~3배 빨라졌습니다.</li>
 <li>이관 후 진행된 대형 이벤트를 BFF 서버 4대(상시 2대, 이벤트 대응 2대)로 문제없이 버텼습니다.</li>
 <li>선언적 데코레이터 덕분에 캐시를 붙이는 비용이 크게 줄었습니다. 데코레이터 한 줄이면 끝나니 캐싱 대상을 부담 없이 늘릴 수 있게 됐습니다.</li>
 <li>SWR 덕분에 TTL이 지나도 방문자가 기다리는 일이 없어졌습니다.</li>
 </ul>
-<h2 id="한계와-다음-과제">한계와 다음 과제<a class="anchor" href="#%ed%95%9c%ea%b3%84%ec%99%80-%eb%8b%a4%ec%9d%8c-%ea%b3%bc%ec%a0%9c">#</a></h2>
-<p>글을 쓰며 코드를 다시 읽어 보니 아쉬운 부분도 눈에 띄었습니다. 다음 개선 거리로 남겨 둡니다.</p>
-<ul>
-<li><strong>락 소유권을 검증하지 않습니다.</strong> <code>unlock</code>은 <code>DEL</code>로 락 키를 지우기만 합니다. 원본 호출이 락 만료 시간(60초)보다 오래 걸리면 다른 서버가 새로 잡은 락을 지워 버릴 수 있습니다. 락 값에 고유 토큰을 넣고 Lua 스크립트로 &ldquo;내 토큰일 때만 삭제&quot;하도록 바꾸는 것이 정석입니다. <sup id="fnref1:9"><a href="#fn:9" class="footnote-ref" role="doc-noteref">9</a></sup></li>
-<li><strong>L1 캐시 무효화가 전파되지 않습니다.</strong> MultiCache에서 <code>evict</code>는 요청을 받은 서버의 L1과 공용 L2만 지웁니다. 다른 서버의 L1에는 최대 TTL 동안 이전 데이터가 남습니다. Redis Pub/Sub으로 무효화 이벤트를 전파하는 방식이 필요합니다.</li>
-<li><strong>Redis 장애 시 미스 경로가 느려집니다.</strong> <code>tryLock</code>은 Redis 에러가 나도 false를 반환하므로, 락 경합과 장애를 구분하지 못합니다. Redis가 죽으면 미스가 날 때마다 백오프 대기를 10번 모두 채운 뒤(약 1.5초) 원본을 호출합니다.</li>
-<li><strong>무효화 직후에는 SWR이 도움이 되지 않습니다.</strong> <code>@CacheEvict</code>는 키를 만료시키는 게 아니라 지워 버립니다. 남은 stale 데이터가 없으니 무효화 직후 요청은 모두 Miss 경로로 가서 락을 기다립니다. 특히 <code>allEntries</code>는 한 상점의 키를 한꺼번에 지우고, <code>SCAN</code>은 <code>MATCH</code> 필터를 적용하기 전에 전체 키스페이스를 훑습니다. 키를 지우는 대신 <code>expiresAt</code>을 과거로 바꿔 stale로 강등시키거나, 네임스페이스에 버전을 붙이는 방식이 대안입니다.</li>
-<li><strong>종료 시 대기 중인 무효화가 사라집니다.</strong> 디바운스로 대기 중인 삭제 요청은 <code>onModuleDestroy</code>에서 취소만 됩니다. 배포 중에 들어온 무효화는 실행되지 않고, 해당 캐시는 TTL까지 남습니다.</li>
-<li><strong>같은 서버의 stale 요청이 매번 락을 시도합니다.</strong> stale 상태에서 요청이 몰리면 요청마다 <code>SET NX</code>가 Redis로 나갑니다. 서버 안에서 이미 갱신을 예약한 키는 건너뛰면 Redis 호출을 줄일 수 있습니다.</li>
-</ul>
 <h2 id="마치며">마치며<a class="anchor" href="#%eb%a7%88%ec%b9%98%eb%a9%b0">#</a></h2>
 <p>처음에는 비즈니스 로직에 섞인 캐시 코드를 걷어 내려고 시작한 리팩토링이었습니다.
-그런데 부하 테스트에서 병목이 BFF 바깥에 있다는 걸 눈으로 확인하고 나니 캐시는 단순 응답성을 넘어 <strong>다른 서비스의 지연이 우리 서버로 번지지 않게 막아 주는 방파제</strong>가 라는 사실을 깨달았습니다. (그 반대도 마찬가지고요.)</p>
+그런데 부하 테스트에서 병목이 BFF 바깥에 있다는 걸 눈으로 확인하고 나니 캐시는 응답을 빠르게 하는 도구를 넘어 <strong>다른 서비스의 지연이 우리 서버로 번지지 않게 막아 주는 방파제</strong>라는 걸 깨달았습니다. 반대로 우리 트래픽이 다른 서비스로 번지지 않게 막아 주기도 합니다.</p>
 <p>그래서 Spring Cache의 검증된 옵션 설계를 빌려 오고, nestjs-aop로 서비스 메서드까지 AOP를 적용해 뼈대를 만들었습니다.
 그 위에 우리 도메인에 필요한 것들을 하나씩 더했습니다.</p>
 <ul>
@@ -1654,17 +1624,17 @@ TCP 연결, TLS 핸드셰이크, 타임아웃 오류가 쏟아져서 의미 있�
 <li>큰 값의 직렬화, 역직렬화 비용을 줄이는 msgpack과 zstd 압축</li>
 <li>몰려드는 무효화 요청을 위한 디바운스</li>
 </ul>
-<p>리팩토링 후 열린 큰 고객사 이벤트도 BFF 서버 4대로 무사히 넘길 수 있었습니다.</p>
+<p>리팩토링 후 열린 큰 고객사 이벤트도 BFF 서버 4대로 무사히 넘길 수 있었습니다. 로컬 재현에서는 TPS가 5.4배로 늘고, 원본 호출은 90% 줄어든 것도 숫자로 확인했습니다.</p>
 <p>돌아보면 이번 작업에서 얻은 교훈은 세 가지입니다.</p>
 <ol>
-<li><strong>데이터의 성격 먼저 따져보기</strong> 얼마나 자주 바뀌는지, 얼마나 큰지, 다시 만드는 데 얼마나 걸리는지, 언제 바뀌는지를 정리하고 나니 SWR, 계층형 캐시, 압축 같은 방법이 자연스럽게 따라왔습니다. 기법을 먼저 고르고 데이터를 오래걸렸을 것 같습니다.</li>
+<li><strong>데이터의 성격 먼저 따져보기</strong> 얼마나 자주 바뀌는지, 얼마나 큰지, 다시 만드는 데 얼마나 걸리는지, 언제 바뀌는지를 정리하고 나니 SWR, 계층형 캐시, 압축 같은 방법이 자연스럽게 따라왔습니다. 기법부터 고르고 데이터를 끼워 맞췄다면 훨씬 오래 걸렸을 것입니다.</li>
 <li><strong>감이 아니라 숫자로 판단하기</strong> 우리 서버가 느리다는 막연한 걱정이 k6 결과를 보고 나서야 다른 서비스의 지연이 BFF로 번진다는 구체적인 문제로 바뀌었습니다. 문제가 구체적이어야 해결책도 정확해집니다.</li>
-<li><strong>캐시는 거들 뿐</strong> 조회가 실패하면 미스로, 저장이 실패하면 원본 결과 그대로. 이 원칙을 지킨 덕분에 캐시를 부담없이 적용할 수 있었습니다.</li>
+<li><strong>캐시는 거들 뿐</strong> 조회가 실패하면 미스로, 저장이 실패하면 원본 결과 그대로. 이 원칙을 지킨 덕분에 캐시를 부담 없이 넓혀 갈 수 있었습니다.</li>
 </ol>
-<p>아직 부족한 점이 있어서 앞에서 정리한 락 소유권 검증과 L1 무효화 전파는 다음 개선 거리로 차근차근 풀어 볼 생각입니다.</p>
-<p>긴 글 읽어 주셔서 감사합니다. 비슷한 트래픽 문제로 캐시 전략을 고민하고 계신 분들께 조금이나마 도움이 되었으면 좋겠습니다. 궁금한 점이나 더 좋은 방법이 있다면 댓글로 편하게 남겨 주세요.</p>
+<p>부족한 글임에도 끝까지 읽어 주셔서 감사합니다. 비슷한 트래픽 문제로 캐시 전략을 고민하고 계신 분들께 도움이 되었으면 좋겠습니다.
+잘못된 내용이 있다면 댓글 부탁드리겠습니다 :)</p>
 <blockquote class='book-hint '>
-<p>이 글에서 다룬 구현은 <a href="https://www.npmjs.com/package/nestjs-cachex">nestjs-cachex</a>라는 이름으로 npm에 공개해 두었습니다. 코드는 <a href="https://github.com/77hdumat/nestjs-cachex">GitHub</a>에서 보실 수 있습니다.</p></blockquote><div class="footnotes" role="doc-endnotes">
+<p>이 글에서 다룬 구현은 <a href="https://www.npmjs.com/package/nestjs-cachex">nestjs-cachex</a>라는 이름으로 npm에 공개해 두었습니다. 코드는 <a href="https://github.com/77hdumat/nestjs-cachex">GitHub</a>에서 확인하실 수 있습니다.</p></blockquote><div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
@@ -1692,7 +1662,7 @@ TCP 연결, TLS 핸드셰이크, 타임아웃 오류가 쏟아져서 의미 있�
 <p><a href="https://datatracker.ietf.org/doc/html/rfc5861">RFC 5861 - HTTP Cache-Control Extensions for Stale Content</a>&#160;<a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:9">
-<p><a href="https://redis.io/docs/latest/commands/set/">Redis - SET</a>&#160;<a href="#fnref:9" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:9" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://redis.io/docs/latest/commands/set/">Redis - SET</a>&#160;<a href="#fnref:9" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:10">
 <p><a href="https://github.com/kriszyp/msgpackr">kriszyp/msgpackr</a>&#160;<a href="#fnref:10" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
@@ -1815,10 +1785,8 @@ TCP 연결, TLS 핸드셰이크, 타임아웃 오류가 쏟아져서 의미 있�
     <li><a href="#부하-테스트">부하 테스트</a>
       <ul>
         <li></li>
-        <li><a href="#운영하면서-알게-된-점">운영하면서 알게 된 점</a></li>
       </ul>
     </li>
-    <li><a href="#한계와-다음-과제">한계와 다음 과제</a></li>
     <li><a href="#마치며">마치며</a></li>
   </ul>
 </nav>
