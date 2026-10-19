@@ -37,7 +37,7 @@ bookToC: false
 <div class="r-card">
 <div class="r-card-head">
 <h4>웹사이트, BFF 캐시 고도화</h4>
-<span class="r-pill">2024.01 ~ 2026.09</span>
+<span class="r-pill">2025.09 ~ 2025.12</span>
 </div>
 
 대형 고객사 이전을 앞둔 부하 테스트에서, 외부 호출을 모킹하면 300 TPS를 버티던 BFF가 리뷰 서비스 하나만 실제로 호출해도 p95 9.71초까지 느려졌습니다. 외부 서비스의 지연이 번지지 않도록 캐시 계층을 다시 설계했습니다.
