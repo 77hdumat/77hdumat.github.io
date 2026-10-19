@@ -42,7 +42,7 @@ bookToC: false
 
 <div class="r-card">
 <div class="r-card-head">
-<h4>웹사이트, BFF 캐시 고도화</h4>
+<h4>웹 빌더, BFF 캐시 고도화</h4>
 <span class="r-pill">2025.09 ~ 2025.12</span>
 </div>
 
