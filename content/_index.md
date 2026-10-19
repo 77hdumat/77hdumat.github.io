@@ -17,6 +17,12 @@ bookToC: false
 </div>
 </section>
 
+<div class="r-stats">
+<div class="r-stat"><strong>81<small>배</small></strong><span>웹사이트 페이지 조회 처리량<br>82 req/s에서 6,640 req/s로</span></div>
+<div class="r-stat"><strong>2.6<small>ms</small></strong><span>캐시 히트 p50 응답 시간<br>235ms에서 줄인 결과</span></div>
+<div class="r-stat"><strong>90<small>%</small></strong><span>느린 원본 서비스 호출 감소<br>같은 부하, 캐시 적용 전후</span></div>
+</div>
+
 <h2 class="r-label">Experience</h2>
 
 <div class="r-timeline">
