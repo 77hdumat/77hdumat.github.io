@@ -484,3 +484,372 @@ div[class*="language-"] {
     font-weight: 500;
   }
 }
+
+/* ===== Resume ===== */
+/* 메인 페이지 이력서입니다. 핵심 지표 카드, 타임라인, 전후 비교 막대로 구성합니다 */
+.markdown .resume {
+  --r-ink: #191f28;
+  --r-sub: #6b7684;
+  --r-line: #eceef1;
+  --r-soft: #f0f0ff;
+  --accent-color: #1a1aff;
+  max-width: 820px;
+  color: var(--r-ink);
+
+  p,
+  li {
+    color: #333d4b;
+  }
+
+  /* 첫 화면 */
+  .r-hero {
+    padding: 2.5rem 0 1rem;
+  }
+
+  .r-eyebrow {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: var(--r-soft);
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .r-name {
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em;
+    margin: 0 0 1rem !important;
+    padding: 0;
+    background: linear-gradient(90deg, #191f28 30%, var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .r-lead {
+    max-width: 640px;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    word-break: keep-all;
+  }
+
+  .r-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+
+    a {
+      flex: 0 0 auto;
+      padding: 0.45rem 1rem;
+      border: 1px solid var(--r-line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--r-ink);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  /* 섹션 제목 */
+  .r-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 4rem 0 1.5rem !important;
+    padding: 0;
+    color: var(--r-sub);
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--r-line);
+    }
+
+    &:hover {
+      color: var(--r-sub);
+    }
+  }
+
+  /* 경력 타임라인 */
+  .r-timeline {
+    position: relative;
+    padding-left: 1.75rem;
+    border-left: 2px solid var(--r-line);
+  }
+
+  .r-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0.55rem;
+      left: calc(-1.75rem - 7px);
+      width: 12px;
+      height: 12px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--accent-color);
+      box-shadow: 0 0 0 2px var(--accent-color);
+    }
+  }
+
+  .r-item-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    h3 {
+      margin: 0 !important;
+      font-size: 1.5rem !important;
+      font-weight: 800 !important;
+    }
+  }
+
+  .r-meta {
+    display: flex;
+    gap: 0.75rem;
+    margin: 0;
+    color: var(--r-sub);
+    font-size: 0.875rem;
+
+    span + span::before {
+      content: "";
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      margin-right: 0.75rem;
+      border-radius: 50%;
+      background: #b0b8c1;
+      vertical-align: middle;
+    }
+  }
+
+  .r-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 1rem 0 0;
+
+    span {
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.5rem;
+      background: #f2f4f6;
+      color: #4e5968;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+  }
+
+  /* 프로젝트 카드 */
+  .r-card {
+    margin-top: 1.5rem;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--r-line);
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(25, 31, 40, 0.05);
+  }
+
+  .r-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    h4 {
+      margin: 0 !important;
+      font-size: 1.2rem !important;
+      font-weight: 700 !important;
+    }
+  }
+
+  .r-pill {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: var(--r-soft);
+    color: var(--accent-color);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .r-card li strong {
+    color: var(--accent-color);
+    font-weight: 700;
+  }
+
+  /* 전후 비교 막대 */
+  .r-compare {
+    margin: 1.25rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 1rem;
+    background: #f9fafb;
+  }
+
+  .r-compare-title {
+    margin: 0 0 0.6rem;
+    color: var(--r-sub) !important;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .r-bar-row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr 6rem;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.35rem 0;
+    font-size: 0.8rem;
+  }
+
+  .r-bar-label {
+    color: var(--r-sub);
+  }
+
+  .r-bar {
+    height: 10px;
+    border-radius: 999px;
+    background: #eceef1;
+    overflow: hidden;
+
+    i {
+      display: block;
+      min-width: 6px;
+      height: 100%;
+      border-radius: 999px;
+      background: #b0b8c1;
+    }
+  }
+
+  .r-bar-row.is-after .r-bar i {
+    background: linear-gradient(90deg, #6b6bff, var(--accent-color));
+  }
+
+  .r-bar-value {
+    color: var(--r-ink);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .r-more,
+  .r-more:visited {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .r-links-sm {
+    margin-top: 0.75rem;
+
+    a {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  /* 글 */
+  .r-post {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.25rem;
+    background: var(--r-soft);
+    text-decoration: none;
+    transition: transform 0.2s ease;
+
+    strong {
+      display: block;
+      color: var(--r-ink);
+      font-size: 1.05rem;
+    }
+
+    span {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--r-sub);
+      font-size: 0.875rem;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .markdown .resume {
+    .r-name {
+      font-size: 2.5rem !important;
+    }
+
+    .r-card {
+      padding: 1.25rem;
+    }
+
+    .r-bar-row {
+      grid-template-columns: 2.25rem 1fr 5rem;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .markdown .resume {
+    --r-ink: #f2f4f6;
+    --r-sub: #9ea7b3;
+    --r-line: rgba(255, 255, 255, 0.12);
+    --r-soft: rgba(26, 26, 255, 0.16);
+    --accent-color: #6b6bff;
+
+    p,
+    li {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .r-name {
+      background: linear-gradient(90deg, #f2f4f6 30%, #8f8fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .r-links a,
+    .r-card {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .r-compare,
+    .r-tags span {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .r-item::before {
+      border-color: #1e1e1e;
+    }
+  }
+}

@@ -8,5 +8,8 @@ params:
 
 markup:
   defaultMarkdownHandler: goldmark
+  goldmark:
+    renderer:
+      unsafe: true
 ignoreLogs:
   - warning-goldmark-raw-html
