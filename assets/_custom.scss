@@ -392,19 +392,21 @@ div[class*="language-"] {
     padding: 0.75rem 1rem !important;
   }
 
-  /* 2열 표 */
-  th:first-child,
-  td:first-child {
-    width: 35% !important;
-    min-width: 35% !important;
-    max-width: 35% !important;
-  }
+  /* 2열 표만 35:65로 고정합니다. 3열 이상은 균등 분배합니다 */
+  &:not(:has(th:nth-child(3))) {
+    th:first-child,
+    td:first-child {
+      width: 35% !important;
+      min-width: 35% !important;
+      max-width: 35% !important;
+    }
 
-  th:nth-child(2),
-  td:nth-child(2) {
-    width: 65% !important;
-    min-width: 65% !important;
-    max-width: 65% !important;
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 65% !important;
+      min-width: 65% !important;
+      max-width: 65% !important;
+    }
   }
 
   /* 표 컨테이너도 전체 너비 */
@@ -416,5 +418,69 @@ div[class*="language-"] {
   tr {
     width: 100% !important;
     display: table-row !important;
+  }
+}
+/* ===== Blockquote as Rounded Card ===== */
+/* 토스 기술 블로그의 회색 카드 톤을 따릅니다. 알림(> [!WARNING])은 테마 스타일을 유지합니다 */
+.markdown blockquote.book-hint:not(.note):not(.tip):not(.important):not(.warning):not(.caution) {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border: none;
+  border-radius: 1.25rem;
+  background: #f2f4f6;
+
+  p, li {
+    color: #4e5968;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  /* 카드 안의 표는 흰 바탕으로 띄워 회색 카드와 구분합니다 */
+  table {
+    margin: 0.75rem 0 0;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .markdown blockquote.book-hint:not(.note):not(.tip):not(.important):not(.warning):not(.caution) {
+    background: rgba(255, 255, 255, 0.06);
+
+    p, li {
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+}
+
+/* ===== Mermaid Diagram ===== */
+/* 코드 블록용 회색 박스 대신 흰 카드로 감쌉니다. 엣지 라벨 배경과 색을 맞춥니다 */
+.markdown pre.mermaid {
+  padding: 2rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e8eb;
+  border-radius: 1.25rem;
+
+  .node rect {
+    rx: 12px;
+    ry: 12px;
+  }
+
+  /* 본문 p 색상이 classDef의 글자색을 덮어쓰지 않게 합니다 */
+  .node p {
+    color: inherit;
+  }
+
+  .edgeLabel,
+  .edgeLabel p,
+  .edgeLabel span {
+    color: #8b95a1;
+    font-size: 13px;
+    font-weight: 500;
   }
 }

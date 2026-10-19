@@ -1,2 +1,11 @@
 .themes
 .idea
+
+# OS
+.DS_Store
+
+# 로컬 도구 상태
+.omc/
+
+# 로컬 도구 설정
+CLAUDE.md

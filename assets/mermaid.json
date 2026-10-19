@@ -1,0 +1,21 @@
+{
+  "flowchart": {
+    "useMaxWidth": true,
+    "curve": "basis",
+    "nodeSpacing": 36,
+    "rankSpacing": 56,
+    "padding": 16
+  },
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Noto Sans KR, sans-serif",
+    "fontSize": "14px",
+    "background": "#ffffff",
+    "primaryColor": "#f2f4f6",
+    "primaryBorderColor": "#f2f4f6",
+    "primaryTextColor": "#333d4b",
+    "lineColor": "#d1d6db",
+    "edgeLabelBackground": "#ffffff",
+    "tertiaryColor": "#ffffff"
+  }
+}
